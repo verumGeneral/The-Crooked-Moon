@@ -1,0 +1,317 @@
+/* sheet-card-buttons */
+
+.charsheet .sheet-crooked-moon .sheet-section-npc,
+.charsheet .sheet-crooked-moon .sheet-section-pc{
+display: none;
+}
+.charsheet .sheet-crooked-moon .sheet-card-toggle[value="npc"] ~ .sheet-section-npc,
+.charsheet .sheet-crooked-moon .sheet-card-toggle[value="pc"] ~ .sheet-section-pc{
+    display: block;
+}
+
+
+
+/* character sheet // page 1 */
+
+/* buttons */
+.ui-dialog .charsheet button[type=roll]:before  {
+    content: "";
+}
+
+.sheet-column-left{ grid-area: sheet-left;}
+.sheet-column-middle{ grid-area: sheet-middle;}
+.sheet-column-right{ grid-area: sheet-right;}
+
+.sheet-toggle-character{
+    display: grid;
+    grid-template-areas: 
+        " sheet-left sheet-middle sheet-right "
+        " sheet-left sheet-middle sheet-right "
+        " sheet-left sheet-middle sheet-right "
+    ;
+    grid-template-columns: 20% auto 20%;
+    gap: 10px;
+}
+/* COLUMN-LEFT */
+.sheet-column-left{
+    display: grid;
+    grid-template-rows: auto auto;
+    background-color: aquamarine;
+}
+.sheet-stat >div{
+    display: flex;
+    justify-content: center;
+}
+.sheet-stat > div > button{
+    background: transparent;
+    border: 0px;
+}
+.scores-values{
+    display: flex;
+    flex-direction: row;
+
+    background-color: blanchedalmond;
+    justify-content: center;
+}
+/* modifier */
+.scores-values > .modifier{
+    display: flex;
+    flex-direction: column;
+}
+.scores-values > .modifier > input{
+    width: 50px;
+    height: 50px;
+    background-color: palevioletred;
+}
+/* score */
+.scores-values > .score{
+    display: flex;
+    flex-direction: column;
+}
+.scores-values > .score > input{
+    background-color: rgb(156, 156, 156);
+    width: 50px;
+    height: 50px;
+
+    float: left;
+}
+.scores-values >.score > span{
+    text-align: center;
+}
+/* skills */
+.skills{
+    display: flex;
+    flex-direction: column;
+}
+.skills > div{
+    display: flex;
+    flex-direction: row;
+}
+/* COLUMN-MIDDLE */
+.sheet-column-middle{
+    display: flex;
+    flex-direction: column;
+
+    background-color: aqua;
+}
+/* core-left */
+.core-column-left{
+    flex-grow: 1;
+    background-color: plum;
+}
+.sheet-character-core{
+    display: flex;
+    flex-direction: row;
+    height: 500px;
+    justify-content: center;
+}
+.core-other-stat{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    height: 15%;
+
+    background-color: peru;
+    margin-bottom: 20px;
+}
+/* core-middle */
+.core-column-middle{
+    flex-grow: 5;
+
+    background-color: rgb(51, 119, 119);
+}
+/* core-right */
+.core-column-right{
+    flex-grow: 1;
+    width: 80px;
+    height: 60px;
+    background-color: blue;
+}
+.core-armor-class{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* character-id*/
+#id-name{
+    background-color: mediumpurple;
+    grid-area: name;
+
+    display: flex;
+    flex-direction: column;
+}
+#id-background{
+    background-color: rgb(98, 76, 142);
+    grid-area: back;
+
+    display: flex;
+    flex-direction: column;
+}
+#id-class{
+    background-color: rgb(101, 60, 182);
+    grid-area: class;
+
+    display: flex;
+    flex-direction: column;
+}
+#id-species{
+    background-color: rgb(131, 115, 163);
+    grid-area: species;
+
+    display: flex;
+    flex-direction: column;
+}
+#id-subclass{
+    background-color: rgb(191, 174, 224);
+    grid-area: subclass;
+
+    display: flex;
+    flex-direction: column;
+}
+#id-speed{
+    background-color: rgb(56, 38, 92);
+    grid-area: speed;
+}
+#id-speed >div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sheet-character-id{
+    display: grid;
+    grid-template-areas: 
+        "name name speed"
+        "back class speed"
+        "species subclass speed"
+    ;
+    background-color: darkseagreen;
+}
+/* character-damage*/
+.sheet-character-damage{
+    display: grid;
+    justify-content: center;
+    height: 200px;
+    background-color: sienna;
+}
+/* character-class-features*/
+.sheet-character-class-features{
+    display: grid;
+    justify-content: center;
+    height: 200px;
+    background-color: rgb(45, 66, 160);
+}
+/* COLUMN-RIGHT */
+.sheet-column-right{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    background-color: blue;
+}
+.sheet-character-dice{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* hp */
+#hp-current>div{
+    display: flex;
+    flex-direction: row;
+
+    background-color: rgb(94, 94, 212);
+}
+#hp-current>div>div{
+    display: flex;
+    flex-direction: column;
+}
+/* hit dice */
+#hit-dice{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: rgb(94, 94, 212);
+}
+#hit-dice>div{
+    display: flex;
+    flex-direction: column;
+}
+/* death saves */
+#death-save{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: rgb(94, 94, 212);
+}
+#death-save>div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* species traits */
+.sheet-character-speacies-traits{
+    justify-content: center;
+    height: 10%;
+    background-color: rgb(94, 212, 188);
+}
+/* backstory */
+.sheet-character-backstory{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 10%;
+    background-color: rgb(36, 96, 56);
+}
+.sheet-character-backstory>div{
+    display: flex;
+    flex-direction: row;
+}
+/* languages */
+.sheet-character-languages{
+    align-items: center;
+    height: 10%;
+    background-color: rgb(103, 156, 121);
+}
+/* spells // page 2 */
+
+/* roll template */
+.sheet-rolltemplate-stat div.sheet-template-container {
+	border: 2px solid #000 !important;
+	border-radius: 3px 3px 3px 3px;
+}
+.sheet-rolltemplate-stat .sheet-template-header {
+	background-color: rgba(112, 32, 130,1);
+	color: #000;
+	padding: 2px;
+	border-bottom: 1px solid black;
+	line-height: 1.6em;
+	font-size: 1.2em;
+}
+.sheet-rolltemplate-stat div {
+	padding: 5px;
+	border-bottom: 1px solid black;
+}
+.sheet-rolltemplate-stat div:nth-child(odd) {
+	background-color: rgb(81, 81, 81);
+}
+.sheet-rolltemplate-stat div:nth-child(even) {
+	background-color: rgb(0, 0, 0);
+}
+.sheet-rolltemplate-stat .inlinerollresult  {
+	display: inline-block;
+	min-width: 1.5em;
+	text-align: center;
+	border: 2px solid rgba(167, 168, 170,1);
+}
+.sheet-rolltemplate-stat .inlinerollresult.fullcrit {
+	border: 2px solid #3FB315;
+}
+.sheet-rolltemplate-stat .inlinerollresult.fullfail {
+	border: 2px solid #B31515;
+}
+.sheet-rolltemplate- .inlinerollresult.importantroll {
+	border: 2px solid #4A57ED;
+}

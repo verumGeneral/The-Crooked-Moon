@@ -1,0 +1,47 @@
+/* sheet - tooltip */
+.sheet-tooltip{
+  cursor: pointer;
+}
+.sheet-tooltip:hover div{
+  display: block;
+  position: absolute;
+}
+.sheet-tooltip div{
+  display: none;
+}
+/* [ BLOCK SWITCH ] */
+.sheet-block-pc,
+.charsheet .sheet-block-switch:checked ~ .sheet-block-npc {
+  display: block;
+}
+.charsheet .sheet-block-npc,
+.charsheet .sheet-block-switch:checked ~ .sheet-block-pc {
+  display: none;
+}
+/* feat-block-switch */
+.row-raw,
+.charsheet .repeat-block-switch:checked ~ .row-clean {
+  display: block;
+}
+.charsheet .row-clean,
+.charsheet .repeat-block-switch:checked ~ .row-raw {
+  display: none;
+}
+/* feat-block-switch-hide-text */
+.charsheet .feat-row-hide:checked ~ div.feat-row-hide-text{
+  display: none;
+}
+/* configure the tab buttons */
+.charsheet .sheet-core,
+.charsheet .sheet-spells,
+.charsheet .sheet-fate,
+.charsheet .sheet-options{
+    display: none;
+}
+/* show the selected tab */
+.charsheet .sheet-tabtoggle[value="core"] ~ div.sheet-core,
+.charsheet .sheet-tabtoggle[value="spells"] ~ div.sheet-spells,
+.charsheet .sheet-tabtoggle[value="fate"] ~ div.sheet-fate,
+.charsheet .sheet-tabtoggle[value="options"] ~ div.sheet-options{
+    display: block;
+}
