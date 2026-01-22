@@ -552,7 +552,7 @@
         <!--[LANGUAGES]-->
         <div class="languages-main">
           <button>LANGUAGES</button>
-          <input type="text" name="attr_languages">
+          <textarea name="attr_languages" placeholder="Common"></textarea>
         </div>
       </div>
       <!--[SPELLS/EQ]-->
@@ -751,31 +751,70 @@
         <!--[EQ PROF]-->
         <div class="prof-main">
           <span>EQUIPMENT TRAINING & PROFICIENCY</span>
+           <!--[WEAPON]-->
           <div class="weapons-main">
-            <div>
-              <button type="roll" name="roll_weapon" value="@{weapon_prof}">WEAPONS</button>  <!--template i wgl-->
+            <div class="weapons-title">
+              <hr>
+              <button type="roll" name="roll_weapon" value="@{weapon_prof}">WEAPONS</button> <!--template i wgl-->
             </div>
-            <input type="text" name="attr_weapon_prof" value="@{weapon_prof}" placeholder="...">
+            <textarea name="attr_weapon_prof" placeholder="Simple"></textarea>
           </div>
+           <!--[TOOLS]-->
           <div class="tools-main">
-            <div>
-              <button type="roll" name="roll_tools" value="@{tools_prof}">TOOLS</button>  <!--template i wgl-->
+            <div class="tools-title">
+              <hr>
+              <span>TOOLS</span> <!--template i wgl-->
             </div>
-            <input type="text" name="attr_tools_prof" value="@{tools_prof}" placeholder="...">
+            <fieldset class="repeating_tools">
+              <input type="checkbox" class="repeat-block-switch" name="attr_spell_block_switch" value="1">
+              <!--row-mod-->
+              <div class="row-raw">
+                <span>Name:</span>
+                <input type="text" name="attr_name" placeholder="Doctor's Tools">
+                <span>Proficiency bonus:</span>
+                <select name="attr_bonus">
+                  <option value="-1">--</option>
+                  <option value="0">PROFICIENT</option>
+                  <option value="1">EXPERTISE</option>
+                  <option value="2">JACK</option>
+                </select>
+                <span>Ability:</span>
+                <select name="attr_ability">
+                  <option value="0">--</option>
+                  <option value="str">STR</option>
+                  <option value="dex">DEX</option>
+                  <option value="con">CON</option>
+                  <option value="int">INT</option>
+                  <option value="wis">WIS</option>
+                  <option value="cha">CHA</option>
+                </select>
+                <span>Mods:</span>
+                <input type="number" name="attr_mod">
+              </div>
+              <!--row-clean-->
+              <div class="row-clean">
+                <input type="button" name="attr_name">
+                <input type="number" name="attr_full_bonus">
+                <input type="text" name="attr_ability">
+              </div>
+            </fieldset>
           </div>
+           <!--[ARMOR]-->
           <div class="armor-main">
             <div>
-              <button type="roll" name="roll_armor" value="@{armor_prof}">ARMOR</button>  <!--template i wgl-->
+              <hr>
+              <button type="roll" name="roll_armor" value="@{armor_prof}">ARMOR</button> <hr><!--template i wgl-->
             </div>
-            <label for="prof_armor_light">Light</label>
+            <span>Light</span>
             <input type="checkbox" id="prof_armor_light" name="attr_armor_light" value="Light">
-            <label for="prof_armor_medium">Medium</label>
+            <span>Medium</span>
             <input type="checkbox" id="prof_armor_medium" name="attr_armor_medium" value="Medium">
-            <label for="prof_armor_heavy">Heavy</label>
+            <span>Heavy</span>
             <input type="checkbox" id="prof_armor_heavy" name="attr_armor_heavy" value="Heavy">
-            <label for="prof_armor_shield">Shields</label>
+            <span>Shields</span>
             <input type="checkbox" id="prof_armor_shield" name="attr_armor_shield" value="Shields">
           </div>
+          <hr>
         </div>
         <!--[EQ]-->
         <div class="eq-main">
@@ -880,11 +919,17 @@
         <!--[EXPERTISE - SKILLS - JACK]-->
         <div class="skill-options-main">
           <span>SKILL OPTIONS</span>
+          <!--half_prof.floor in non prof things-->
+          <div class="skill-jack">
+            <input type="checkbox" name="attr_jack" value="1">
+            <span>[JACK OF ALL TRADES]</span>
+          </div>
           <div class="skill-option">
             <input type="checkbox" name="attr_athl_expe" value="1">
             <span>Athletics</span>
             <span>+</span>
             <input type="number" name="attr_athl_optional_bonus" value="@{athl_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_athl_bonus" value="@{athl_bonus}">
           </div>
           <div class="skill-option">
@@ -892,6 +937,7 @@
             <span>Acrobatics</span>
             <span>+</span>
             <input type="number" name="attr_acro_optional_bonus" value="@{acro_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_acro_bonus" value="@{acro_bonus}">
           </div>
           <div class="skill-option">
@@ -899,6 +945,7 @@
             <span>Sleight of Hand</span>
             <span>+</span>
             <input type="number" name="attr_slei_optional_bonus" value="@{slei_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_slei_bonus" value="@{slei_bonus}">
           </div>
           <div class="skill-option">
@@ -906,6 +953,7 @@
             <span>Stealth</span>
             <span>+</span>
             <input type="number" name="attr_stea_optional_bonus" value="@{stea_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_stea_bonus" value="@{stea_bonus}">
           </div>
           <div class="skill-option">
@@ -913,6 +961,7 @@
             <span>Arcana</span>
             <span>+</span>
             <input type="number" name="attr_arca_optional_bonus" value="@{arca_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_arca_bonus" value="@{arca_bonus}">
           </div>
           <div class="skill-option">
@@ -920,6 +969,7 @@
             <span>History</span>
             <span>+</span>
             <input type="number" name="attr_hist_optional_bonus" value="@{hist_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_hist_bonus" value="@{hist_bonus}">
           </div>
           <div class="skill-option">
@@ -927,6 +977,7 @@
             <span>Investigation</span>
             <span>+</span>
             <input type="number" name="attr_inve_optional_bonus" value="@{inve_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_inve_bonus" value="@{inve_bonus}">
           </div>
           <div class="skill-option">
@@ -934,6 +985,7 @@
             <span>Nature</span>
             <span>+</span>
             <input type="number" name="attr_natu_optional_bonus" value="@{natu_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_natu_bonus" value="@{natu_bonus}">
           </div>
           <div class="skill-option">
@@ -941,6 +993,7 @@
             <span>Religion</span>
             <span>+</span>
             <input type="number" name="attr_reli_optional_bonus" value="@{reli_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_reli_bonus" value="@{reli_bonus}">
           </div>
           <div class="skill-option">
@@ -948,6 +1001,7 @@
             <span>Animal Handling</span>
             <span>+</span>
             <input type="number" name="attr_anim_optional_bonus" value="@{anim_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_anim_bonus" value="@{anim_bonus}">
           </div>
           <div class="skill-option">
@@ -955,6 +1009,7 @@
             <span>Insight</span>
             <span>+</span>
             <input type="number" name="attr_insi_optional_bonus" value="@{insi_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_insi_bonus" value="@{insi_bonus}">
           </div>
           <div class="skill-option">
@@ -962,6 +1017,7 @@
             <span>Medicine</span>
             <span>+</span>
             <input type="number" name="attr_medi_optional_bonus" value="@{medi_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_medi_bonus" value="@{medi_bonus}">
           </div>
           <div class="skill-option">
@@ -969,6 +1025,7 @@
             <span>Perception</span>
             <span>+</span>
             <input type="number" name="attr_perc_optional_bonus" value="@{perc_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_perc_bonus" value="@{perc_bonus}">
           </div>
           <div class="skill-option">
@@ -981,6 +1038,7 @@
             <span>Survival</span>
             <span>+</span>
             <input type="number" name="attr_surv_optional_bonus" value="@{surv_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_surv_bonus" value="@{surv_bonus}">
           </div>
           <div class="skill-option">
@@ -988,6 +1046,7 @@
             <span>Deception</span>
             <span>+</span>
             <input type="number" name="attr_dece_optional_bonus" value="@{dece_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_dece_bonus" value="@{dece_bonus}">
           </div>
           <div class="skill-option">
@@ -995,6 +1054,7 @@
             <span>Intimidation</span>
             <span>+</span>
             <input type="number" name="attr_inti_optional_bonus" value="@{inti_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_inti_bonus" value="@{inti_bonus}">
           </div>
           <div class="skill-option">
@@ -1002,6 +1062,7 @@
             <span>Performance</span>
             <span>+</span>
             <input type="number" name="attr_perf_optional_bonus" value="@{perf_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_perf_bonus" value="@{perf_bonus}">
           </div>
           <div class="skill-option">
@@ -1009,6 +1070,7 @@
             <span>Persuasion</span>
             <span>+</span>
             <input type="number" name="attr_pers_optional_bonus" value="@{pers_optional_bonus}">
+            <span>value:</span>
             <input type="number" name="attr_pers_bonus" value="@{pers_bonus}">
           </div>
         </div>
@@ -1059,6 +1121,7 @@
   'is_damage_1','damage_dice_1','damage_bonus_1','optional_damage_mod_1',
   'damage_type_1','is_damage_2','damage_dice_2','damage_bonus_2','optional_damage_mod_2',
   'damage_type_2','is_save','attack_save_stat'];
+  const change_tools = ['name','bonus','ability','mod'];
   // Bard, Cleric, Druid, Sorcerer, Wizard
   const full_caster = {
     1:  [2,0,0,0,0,0,0,0,0],
@@ -1159,10 +1222,17 @@
     });
     return changes;
   };
-    function build_changes_repeat(entries) {
+  function build_changes_repeat_attack(entries) {
     let changes = '';
     entries.forEach(function(entry) {
       changes += `change:repeating_attack:${entry.toLowerCase()} `;
+    });
+    return changes;
+  };
+  function build_changes_repeat_tools(entries) {
+    let changes = '';
+    entries.forEach(function(entry) {
+      changes += `change:repeating_tools:${entry.toLowerCase()} `;
     });
     return changes;
   };
@@ -1193,14 +1263,16 @@
     const stat_mod = mod;
     return stat_mod+(stat_prof*stat_save);
   }
-  function skill_mod(skill, prof, mod, expe, optional){
+  function skill_mod(skill, prof, mod, expe, optional, jack_check){
     const skill_check = int(skill,0);
     const prof_bonus = int(prof,2);
     const stat_mod = mod;
     const skill_expe = int(expe,0);
-    const skill_optional = int(optional,0); 
-    if (skill_check === 0 ) return stat_mod+skill_optional;
-    else return stat_mod+(prof_bonus*skill_check+prof_bonus*skill_expe)+skill_optional;
+    const skill_optional = int(optional,0);
+    const jack = int(jack_check,0);
+    if (skill_check === 0 && jack === 0) return stat_mod+skill_optional;
+    else if (skill_check === 0 && jack === 1) return stat_mod+skill_optional+ Math.floor(prof_bonus/2);
+    else return stat_mod+(prof_bonus+prof_bonus*skill_expe)+skill_optional;
   }
 
   // [ ABILITY - MOD - SKILL - SKILL_OPTIONAL - SAVE - INIT - PASSIVE ]
@@ -1236,21 +1308,23 @@
     });
   });
 
-  // [ SKILL BONUS ]
+  // [SKILL BONUS]
   skills_name.forEach(skill => {
-    on(`${build_changes_mod(get_by_key(skills,skill))} change:${skill} change:${skill}_expe change:${skill}_optional_bonus change:prof_bonus`,() => {
-        //console.log(`-- skill_bonus --`);
-      getAttrs([skill, skill+"_expe", skill+"_optional_bonus",...build_mod(get_by_key(skills,skill)),"prof_bonus","pass_optional_bonus"], values => {
+    on(`${build_changes_mod(get_by_key(skills,skill))} change:${skill} change:${skill}_expe change:${skill}_optional_bonus change:prof_bonus change:jack`,() => {
+        console.log(`-- skill_bonus --`);
+      getAttrs([skill, skill+"_expe", skill+"_optional_bonus",...build_mod(get_by_key(skills,skill)),"prof_bonus","pass_optional_bonus", "jack"], values => {
         let pass_per;
         const stat_mod = [...build_mod(get_by_key(skills,skill))];
-        skill_bonus = skill_mod(values[skill],values.prof_bonus,values[stat_mod],values[skill+"_expe"],values[skill+"_optional_bonus"]);
+        skill_bonus = skill_mod(values[skill],values.prof_bonus,values[stat_mod],values[skill+"_expe"],values[skill+"_optional_bonus"],values.jack);
          const output = {
           [`${skill}_bonus`]: skill_bonus,
         }
         if (skill === 'perc') {
           let check = int(values.perc,0);
           let pass_optional = int(values.pass_optional_bonus,0);
-          pass_per = 10+values[stat_mod]+values.prof_bonus*check+pass_optional;
+          let jack_check = int(values.jack,0);
+          if (check === 0 && jack_check === 1) pass_per = 10+values[stat_mod]+pass_optional+Math.floor(values.prof_bonus/2);
+          else pass_per = 10+values[stat_mod]+values.prof_bonus+pass_optional;
           output.pass_bonus = pass_per;
         }
         //console.log(output);
@@ -1262,7 +1336,7 @@
     });
   });
 
-  // [ PROF_BONUS - HIT DICE - STRESS ]
+  // [PROF_BONUS - HIT DICE - STRESS]
   on(`change:level change:stress_max`,() =>{
     getAttrs(["level", "stress_max", "stress"], values => {
       const level = int(values.level,1);
@@ -1288,7 +1362,7 @@
     });
   });
 
-  // [ CLASS - SPELL-ABILITY]
+  // [CLASS - SPELL-ABILITY]
   const class_name = [];
   for (const key of class_dice.keys()) {
     class_name.push(key);
@@ -1391,14 +1465,42 @@
 
   const section_name = (section, id, field) => `repeating_${section}_${id}_${field}`;
 
-  // [EQ-FILTER]
+  // [EQ - CHANGE - TAG]
+  on(`change:repeating_eq:eq_type`,() => {
+    console.log(`-- repeating_eq_tag --`);
+    getSectionIDs('repeating_eq', ids => {
+      const fields = ids.reduce((all, id) => [...all, section_name('eq', id, 'eq_type')], []);
+      getAttrs([...fields], values => {
+        const output = {};
+        ids.forEach(id => {
+          const tag = int(values[section_name('eq', id, 'eq_type')],0);
+          let clean_tag;
+          switch (tag){
+            case 0: clean_tag = '[W]'; break;
+            case 1: clean_tag = '[A]'; break;
+            case 2: clean_tag = '[M]'; break;
+            case 3: clean_tag = '[F]'; break;
+            case 4: clean_tag = '[C]'; break;
+            case 5: clean_tag = '[R]'; break;
+            case 6: clean_tag = '[O]'; break
+            default: clean_tag = '[-]';
+          }
+          output[section_name('eq', id, 'eq_type_clean')] = clean_tag;
+          //console.log(`${tag}:${clean_tag}`);
+        });
+        setAttrs(output);
+      });
+    });
+  });
+
+  // [EQ - FILTER]
   eq_button.forEach(button => {
     on(`clicked:eq_${button}`,() => {
       //console.log(`-- repeating_eq_filter --`);
       getSectionIDs('repeating_eq', ids => {
         const fields = ids.reduce((all,id) => [...all,section_name('eq', id, 'eq_type')], []);
-        const output = {};
         getAttrs([...fields, 'eq_'+button], values => {
+          const output = {};
           ids.forEach(id => {
             const filter_type = int(values["eq_"+button],0);
             const this_eq_type = int(values[section_name('eq', id, 'eq_type')],0);
@@ -1412,13 +1514,13 @@
 
   // [AC]
   on(`change:dex_mod change:repeating_eq:name change:repeating_eq:eq_type`,() => {
-    console.log(`-- repeating_eq --`);
+    console.log(`-- armore class --`);
     getSectionIDs(`repeating_eq`, ids => {
       const fields = ids.reduce((all, id) => [...all,
       section_name('eq', id, 'name'), 
       section_name('eq', id, 'eq_type')], []);
-      const output = {};
       getAttrs([...fields, 'dex_mod', 'ac', 'con_mod','wis_mod','class'], values => {
+        const output = {};
         const stat_mod = int(values.dex_mod,0);
         const armor_name = [];
         const class_name = values.class;
@@ -1490,9 +1592,44 @@
       });
     });
   });
+
+  // [REPEATING - TOOLS]
+  on(`${build_changes_repeat_tools(change_tools)} ${build_changes_mod(stats)}`,() => {
+    console.log(`-- repeating_tools --`);
+    getSectionIDs('repeating_tools', ids => {
+      const fields = ids.reduce((all,id) => [...all,
+      section_name('tools', id, 'bonus'),
+      section_name('tools', id, 'ability'),
+      section_name('tools', id, 'mod')], []);
+      getAttrs([...fields,...build_mod(stats),'prof_bonus'],values => {
+        const output = {};
+        const prof = int(values.prof_bonus,2);
+        ids.forEach(id => {
+          const ability = values[section_name('tools', id, 'ability')];
+          const bonus = int(values[section_name('tools', id, 'bonus')],0);
+          const mod = int(values[section_name('tools', id, 'mod')],0);
+          let full_bonus;
+          let stat_bonus;
+          stats.forEach(stat => {
+            if (ability === stat) stat_bonus = int(values[stat+'_mod'],0);
+          });
+          if (bonus === -1) full_bonus = 0+stat_bonus+mod;
+          else if (bonus === 0) full_bonus = prof+stat_bonus+mod;
+          else if (bonus === 1) full_bonus = 2*prof+stat_bonus+mod;
+          else full_bonus = Math.floor(prof/2)+stat_bonus+mod;
+          output[section_name('tools', id, 'full_bonus')] = full_bonus;
+        });
+        //console.log(output);
+        setAttrs(
+          output,
+          {silent:true}
+        );
+      });
+    });
+  });
   
-  // [ REPEATING - ATTACK ]
-  on(`${build_changes_repeat(change_attack)} ${build_changes_mod(stats)} change:prof_bonus`,() => {
+  // [REPEATING - ATTACK]
+  on(`${build_changes_repeat_attack(change_attack)} ${build_changes_mod(stats)} change:prof_bonus`,() => {
     //console.log(`-- repeating_attack --`);
     getSectionIDs(`repeating_attack`, ids => {
       const fields = ids.reduce((all, id) => [...all, 
@@ -1588,7 +1725,7 @@
     });
   });
 
-  // [ BUTTONS ]
+  // [BUTTONS]
   mainButton.forEach(button => {
       on(`clicked:${button}` , function() {
           setAttrs({

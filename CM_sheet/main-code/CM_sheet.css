@@ -1,3 +1,7 @@
+/* cursor */
+input[readonly] {
+  cursor: default;
+}
 /* sheet - tooltip */
 .sheet-tooltip{
   cursor: pointer;
