@@ -18,7 +18,7 @@
         <div class="ability-main">
           <!--[STR]-->
           <div class="ability-data">
-            <button>STRENGTH</button>
+            <button type="action" name="act_str">STRENGTH</button>
             <div class="ability-stat">
               <div class="ability-mod">
                 <input type="number" name="attr_str_mod" value="@{str_mod}">
@@ -32,15 +32,15 @@
             <div class="ability-input">
               <input type="checkbox" name="attr_str_save" value="1">
               <input type="hidden" name="attr_str_save_bonus" value="@{str_save_bonus}">
-              <button>SAVING THROW</button>
+              <button type="action" name="act_str_save">SAVING THROW</button>
               <input type="checkbox" name="attr_athl" value="1">
               <input type="hidden" name="attr_athl_bonus" value="@{athl_bonus}">
-              <button>Athletics</button>
+              <button type="action" name="act_athl">Athletics</button>
             </div>
           </div>
           <!--[DEX]-->
           <div class="ability-data">
-            <button>DEXTERITY</button>
+            <button type="action" name="act_dex">DEXTERITY</button>
             <div class="ability-stat">
               <div class="ability-mod">
                 <input type="number" name="attr_dex_mod" value="@{dex_mod}" readonly>
@@ -54,21 +54,21 @@
             <div class="ability-input">
               <input type="checkbox" name="attr_dex_save" value="1">
               <input type="hidden" name="attr_dex_save_bonus" value="@{dex_save_bonus}">
-              <button>SAVING THROW</button>
+              <button type="action" name="act_dex_save">SAVING THROW</button>
               <input type="checkbox" name="attr_acro" value="1">
               <input type="hidden" name="attr_acro_bonus" value="@{acro_bonus}">
-              <button>Acrobatics</button>
+              <button type="action" name="act_acro">Acrobatics</button>
               <input type="checkbox" name="attr_slei" value="1">
               <input type="hidden" name="attr_slei_bonus" value="@{slei_bonus}">
-              <button>Sleight of Hand</button>
+              <button type="action" name="act_slei">Sleight of Hand</button>
               <input type="checkbox" name="attr_stea" value="1">
               <input type="hidden" name="attr_stea_bonus" value="@{stea_bonus}">
-              <button>Stealth</button>
+              <button type="action" name="act_stea">Stealth</button>
             </div>
           </div>
           <!--[CON]-->
           <div class="ability-data">
-            <button>CONSTITUTION</button>
+            <button type="action" name="act_con">CONSTITUTION</button>
             <div class="ability-stat">
               <div class="ability-mod">
                 <input type="number" name="attr_con_mod" value="@{con_mod}" readonly>
@@ -82,12 +82,12 @@
             <div class="ability-input">
               <input type="checkbox" name="attr_con_save" value="1">
               <input type="hidden" name="attr_con_save_bonus" value="@{con_save_bonus}">
-              <button>SAVING THROW</button>
+              <button type="action" name="act_con_save">SAVING THROW</button>
             </div>
           </div>
           <!--[INT]-->
           <div class="ability-data">
-            <button>INTELLIGENCE</button>
+            <button type="action" name="act_int">INTELLIGENCE</button>
             <div class="ability-stat">
               <div class="ability-mod">
                 <input type="number" name="attr_int_mod" value="@{int_mod}" readonly>
@@ -101,27 +101,27 @@
             <div class="ability-input">
               <input type="checkbox" name="attr_int_save" value="1">
               <input type="hidden" name="attr_int_save_bonus" value="@{int_save_bonus}">
-              <button>SAVING THROW</button>
+              <button type="action" name="act_int_save">SAVING THROW</button>
               <input type="checkbox" name="attr_arca" value="1">
               <input type="hidden" name="attr_arca_bonus" value="@{arca_bonus}">
-              <button>Arcana</button>
+              <button type="action" name="act_arca">Arcana</button>
               <input type="checkbox" name="attr_hist" value="1">
               <input type="hidden" name="attr_hist_bonus" value="@{hist_bonus}">
-              <button>History</button>
+              <button type="action" name="act_hist">History</button>
               <input type="checkbox" name="attr_inve" value="1">
               <input type="hidden" name="attr_inve_bonus" value="@{inve_bonus}">
-              <button>Investigation</button>
+              <button type="action" name="act_inve">Investigation</button>
               <input type="checkbox" name="attr_natu" value="1">
               <input type="hidden" name="attr_natu_bonus" value="@{natu_bonus}">
-              <button>Nature</button>
+              <button type="action" name="act_natu">Nature</button>
               <input type="checkbox" name="attr_reli" value="1">
               <input type="hidden" name="attr_reli_bonus" value="@{reli_bonus}">
-              <button>Religion</button>
+              <button type="action" name="act_reli">Religion</button>
             </div>
           </div>
           <!--[WIS]-->
           <div class="ability-data">
-            <button>WISDOM</button>
+            <button type="action" name="act_wis">WISDOM</button>
             <div class="ability-stat">
               <div class="ability-mod">
                 <input type="number" name="attr_wis_mod" value="@{wis_mod}" readonly>
@@ -135,22 +135,22 @@
             <div class="ability-input">
               <input type="checkbox" name="attr_wis_save" value="1">
               <input type="hidden" name="attr_wis_save_bonus" value="@{wis_save_bonus}">
-              <button>SAVING THROW</button>
+              <button type="action" name="act_wis_save">SAVING THROW</button>
               <input type="checkbox" name="attr_anim" value="1">
               <input type="hidden" name="attr_anim_bonus" value="@{anim_bonus}">
-              <button>Animal Handling</button>
+              <button type="action" name="act_anim">Animal Handling</button>
               <input type="checkbox" name="attr_insi" value="1">
               <input type="hidden" name="attr_insi_bonus" value="@{insi_bonus}">
-              <button>Insight</button>
+              <button type="action" name="act_insi">Insight</button>
               <input type="checkbox" name="attr_medi" value="1">
               <input type="hidden" name="attr_medi_bonus" value="@{medi_bonus}">
-              <button>Medicine</button>
+              <button type="action" name="act_medi">Medicine</button>
               <input type="checkbox" name="attr_perc" value="1">
               <input type="hidden" name="attr_perc_bonus" value="@{perc_bonus}">
-              <button>Perception</button>
+              <button type="action" name="act_perc">Perception</button>
               <input type="checkbox" name="attr_surv" value="1">
               <input type="hidden" name="attr_surv_bonus" value="@{surv_bonus}">
-              <button>Survival</button>
+              <button type="action" name="act_surv">Survival</button>
               <div class="ability-passive">
                 <input type="number" name="attr_pass_bonus" value="@{pass_bonus}" readonly>
                 <span>Passive</span>
@@ -159,7 +159,7 @@
           </div>
           <!--[CHA]-->
           <div class="ability-data">
-            <button>CHARISMA</button>
+            <button type="action" name="act_cha">CHARISMA</button>
             <div class="ability-stat">
               <div class="ability-mod">
                 <input type="number" name="attr_cha_mod" value="@{cha_mod}" readonly>
@@ -173,19 +173,19 @@
             <div class="ability-input">
               <input type="checkbox" name="attr_cha_save" value="1">
               <input type="hidden" name="attr_cha_save_bonus" value="@{cha_save_bonus}">
-              <button>SAVING THROW</button>
+              <button type="action" name="act_cha_save">SAVING THROW</button>
               <input type="checkbox" name="attr_dece" value="1">
               <input type="hidden" name="attr_dece_bonus" value="@{dece_bonus}">
-              <button>Deception</button>
+              <button type="action" name="act_dece">Deception</button>
               <input type="checkbox" name="attr_inti" value="1">
               <input type="hidden" name="attr_inti_bonus" value="@{inti_bonus}">
-              <button>Intimidation</button>
+              <button type="action" name="act_inti">Intimidation</button>
               <input type="checkbox" name="attr_perf" value="1">
               <input type="hidden" name="attr_perf_bonus" value="@{perf_bonus}">
-              <button>Performance</button>
+              <button type="action" name="act_perf">Performance</button>
               <input type="checkbox" name="attr_pers" value="1">
               <input type="hidden" name="attr_pers_bonus" value="@{pers_bonus}">
-              <button>Persuasion</button>
+              <button type="action" name="act_pers">Persuasion</button>
             </div>
           </div>
         </div>
@@ -409,12 +409,10 @@
             </div>
             <!--row-clean-->
             <div class="row-clean">
-              <input type="button" name="attr_name" readonly>
+              <button><span name="attr_name"></span></button>
               <input type="text" name="attr_atk_bonus" readonly>
-              <input type="button" name="attr_atk_damage" readonly>
+              <button><span name="attr_atk_damage"></span></button>
               <input name="attr_notes" readonly>
-              <!--dodać do tego hidden attr-->
-              
             </div>
           </fieldset>
         </div>
@@ -425,6 +423,14 @@
             <input type="checkbox" class="repeat-block-switch" name="attr_feat_block_switch" value="1">
                <!--row-mod-->
               <div class="row-raw">
+                <span>Have a limited amount of uses?</span>
+                <input type="checkbox" class="feat-row-show-check" name="attr_show_track" value="1">
+                <div class="feat-row-show">
+                  <input type="checkbox" name="attr_use_prof" value="1">
+                  <span>Use PB?</span>
+                  <span>Total:</span>
+                  <input type="number" name="attr_use_total">
+                </div>
                 <span>NAME:</span>
                 <input type="text" name="attr_name" placeholder="...">
                 <span>SOURCE TYPE:</span>
@@ -433,10 +439,10 @@
               </div>
               <!--row-clean-->
               <div class="row-clean">
-                <input type="text" name="attr_name">
-                <button type="roll" name="roll_feat" value="[placeholder_macro]">chat</button>
+                <input type="number" name="attr_use">
+                <button><span name="attr_name"></span></button>
                 <input type="text" name="attr_source_type" readonly>
-                <input type="checkbox" class="feat-row-hide"> <!--zrobić to niewidoczne dla nazwy-->
+                <input type="checkbox" class="feat-row-hide">
                 <div class="feat-row-hide-text">
                   <input type="text" name="attr_text" readonly>
                 </div>
@@ -530,10 +536,9 @@
               </div>
               <!--row-clean-->
               <div class="row-clean">
-                <input type="text" name="attr_name">
-                <button type="roll" name="roll_feat" value="[placeholder_macro]">chat</button>
+                <button><span name="attr_name"></span></button>
                 <input type="text" name="attr_source_type" readonly>
-                <input type="checkbox" class="feat-row-hide"> <!--zrobić to niewidoczne dla nazwy-->
+                <input type="checkbox" class="feat-row-hide">
                 <div class="feat-row-hide-text">
                   <input type="text" name="attr_text" readonly>
                 </div>
@@ -672,11 +677,10 @@
               </div>
               <!--row-clean-->
               <div class="row-clean">
-                <input type="text" name="attr_name">
-                <button type="roll" name="roll_feat" value="[placeholder_macro]">chat</button>
+                <button><span name="attr_name"></span></button>
                 <input type="text" name="attr_source" readonly>
                 <input type="text" name="attr_source_type" readonly>
-                <input type="checkbox" class="feat-row-hide"> <!--zrobić to niewidoczne dla nazwy-->
+                <input type="checkbox" class="feat-row-hide">
                 <div class="feat-row-hide-text">
                   <input type="text" name="attr_text" readonly>
                 </div>
@@ -793,7 +797,7 @@
               </div>
               <!--row-clean-->
               <div class="row-clean">
-                <input type="button" name="attr_name">
+                <button><span name="attr_name"></span></button>
                 <input type="number" name="attr_full_bonus">
                 <input type="text" name="attr_ability">
               </div>
@@ -1078,7 +1082,16 @@
         <div class="dice-option-main">
           <span>Hit Dice:</span>
           <input type="text" name="attr_hd_dice" value="@{hd_dice}">
-        </div>  
+        </div> 
+        <!--[ROLL OPTION]-->
+        <div class="roll-main">
+          <span>Roll:</span>
+          <select name="attr_roll">
+            <option value="-1">--</option>
+            <option value="0">Normal</option>
+            <option value="1">Advantage</option>
+          </select>
+        </div>
     </div>
   </div>
   <!--[NPC-SHEET-MAIN]-->
@@ -1086,6 +1099,16 @@
     <span>[NPC]</span>
   </div>
   <!--[ROLLTEMPLATE]-->
+  <rolltemplate class="sheet-rolltemplate-simple-roll">
+    <div class="sheet-roll-result">{{roll_1}}</div>
+    {{#roll_2}}
+      <div class="sheet-roll-result">{{roll_2}}</div>
+    {{/roll_2}}
+    <div class="sheet-template-title">
+      {{title}}
+      <div class="sheet-template-bonus"><span>(</span>{{bonus}}<span>)</span></div>
+    </div>
+  </rolltemplate>
 </div>
 <script type="text/worker"> 
   // [VARIABLES]
@@ -1111,6 +1134,16 @@
     ['perc', stats[4]],['surv', stats[4]],['dece', stats[5]],['inti', stats[5]],
     ['perf', stats[5]],['pers', stats[5]]
   ]);
+
+  const full_name = new Map ([
+    ['str', {name:'strength', athl:'athletics'}],
+    ['dex', {name:'dexterity', acro:'acrobatics', slei:'sleight of hand', stea:'stealth'}],
+    ['con', {name:'constitution'}],
+    ['int', {name:'intelligence', arca:'arcana', hist:'history', inve:'investigation', natu:'nature', reli:'religion'}],
+    ['wis', {name:'wisdom', anim:'animal handling', insi:'insight', medi:'medicine', perc:'perception',surv:'survical'}],
+    ['cha', {name:'charisam', dece:'deception', inti:'intimidation', perf:'performance', pers:'persuasion'}]
+  ]);
+
   const class_dice = new Map ([
     ['Barbarian', 'd12'],['Bard', 'd8'],['Cleric', 'd8'],['Druid', 'd8'],
     ['Fighter', 'd10'],['Monk', 'd8'],['Paladin', 'd10'],['Ranger', 'd10'],
@@ -1192,6 +1225,14 @@
     20: [0,0,0,0,4,0,0,0,0],
   };
   // [FUNCTION]
+  function build_click(entries) {
+    let changes = [];
+    for (let i=0; i< entries.length;i++){ 
+      let change = `clicked:${entries[i].toLowerCase()} `;
+      changes.push(change);
+    }
+    return changes;
+  };
   function build_mod(entries) {
     let changes = [];
     for (let i=0; i< entries.length;i++){ 
@@ -1580,6 +1621,7 @@
               }
               else if (class_name == 'Barbarian') ac = 10+stat_mod+con;
               else if (class_name == 'Monk') ac = 10+stat_mod+wis;
+              else ac=10+stat_mod;
               output[`ac`]= ac;
             }
           }
@@ -1732,5 +1774,38 @@
               sheetTab: button
           });
       });
+  });
+
+  // [SIMPLE - ROLL - BUTTONS - STATS - SAVES - ABILITY]
+  stats.forEach(stat => {
+    const skill = [...get_by_value(skills,stat)];
+    const skill_changes = skill.map(name => `clicked:${name}`).join(' ');
+    on(`clicked:${stat} clicked:${stat}_save ${skill_changes}` ,(eventInfo) => {
+      console.log(`-- click --`);
+      getAttrs(['roll',stat+'_mod',stat+'_save_bonus',...build_bonus(get_by_value(skills,stat))],values => {
+        const trigger = eventInfo.triggerName.replace('clicked:','');
+        const roll_check = int(values.roll,0);
+        let roll_name;
+        let bonus;
+        let roll_string;
+        if (trigger === stat){
+          bonus = int(values[stat+'_mod'],0);
+          roll_name = full_name.get(stat).name.toUpperCase();
+        } 
+        else if (trigger === stat+'_save'){
+          bonus = int(values[stat+'_save_bonus'],0);
+          roll_name = `${full_name.get(stat).name} save`.toUpperCase();
+        } 
+        else{
+          bonus = int(values[trigger+'_bonus'],0);
+          roll_name = full_name.get(stat)[trigger].toUpperCase();
+        } 
+        roll_string = `&{template:simple-roll} {{title=${roll_name} }} {{bonus=${bonus} }} {{roll_1=[[1d20+${bonus}]]}} `;
+        if (roll_check === 1) roll_string += `{{roll_2=[[1d20+${bonus}]]}}`;
+        startRoll(roll_string, roll_stat => {
+          finishRoll(roll_stat.rollId);
+        });
+      });
+    });
   });
 </script>
