@@ -30,7 +30,7 @@
               </div>
             </div>
             <div class="ability-input">
-              <input type="checkbox" name="attr_str_save" value="1">
+              <input type="checkbox" name="attr_str_save" value="1" readonly>
               <input type="hidden" name="attr_str_save_bonus" value="@{str_save_bonus}">
               <button type="action" name="act_str_save">SAVING THROW</button>
               <input type="checkbox" name="attr_athl" value="1">
@@ -52,7 +52,7 @@
               </div>
             </div>
             <div class="ability-input">
-              <input type="checkbox" name="attr_dex_save" value="1">
+              <input type="checkbox" name="attr_dex_save" value="1" readonly>
               <input type="hidden" name="attr_dex_save_bonus" value="@{dex_save_bonus}">
               <button type="action" name="act_dex_save">SAVING THROW</button>
               <input type="checkbox" name="attr_acro" value="1">
@@ -80,7 +80,7 @@
               </div>
             </div>
             <div class="ability-input">
-              <input type="checkbox" name="attr_con_save" value="1">
+              <input type="checkbox" name="attr_con_save" value="1" readonly>
               <input type="hidden" name="attr_con_save_bonus" value="@{con_save_bonus}">
               <button type="action" name="act_con_save">SAVING THROW</button>
             </div>
@@ -99,7 +99,7 @@
               </div>
             </div>
             <div class="ability-input">
-              <input type="checkbox" name="attr_int_save" value="1">
+              <input type="checkbox" name="attr_int_save" value="1" readonly>
               <input type="hidden" name="attr_int_save_bonus" value="@{int_save_bonus}">
               <button type="action" name="act_int_save">SAVING THROW</button>
               <input type="checkbox" name="attr_arca" value="1">
@@ -133,7 +133,7 @@
               </div>
             </div>
             <div class="ability-input">
-              <input type="checkbox" name="attr_wis_save" value="1">
+              <input type="checkbox" name="attr_wis_save" value="1" readonly>
               <input type="hidden" name="attr_wis_save_bonus" value="@{wis_save_bonus}">
               <button type="action" name="act_wis_save">SAVING THROW</button>
               <input type="checkbox" name="attr_anim" value="1">
@@ -171,7 +171,7 @@
               </div>
             </div>
             <div class="ability-input">
-              <input type="checkbox" name="attr_cha_save" value="1">
+              <input type="checkbox" name="attr_cha_save" value="1" readonly>
               <input type="hidden" name="attr_cha_save_bonus" value="@{cha_save_bonus}">
               <button type="action" name="act_cha_save">SAVING THROW</button>
               <input type="checkbox" name="attr_dece" value="1">
@@ -197,8 +197,10 @@
               <input type="number" name="attr_prof_bonus" value="@{prof_bonus}" readonly>
             </div>
             <div class="stat">
-              <button>INITIATIVE</button>
-              <input type="number" name="attr_initiative" value="@{initiative}" readonly>
+              <button type="roll" name="roll_initiative" 
+              value="&{template:specific} {{title=INITIATIVE}} {{roll_1=[[1d20+@{init}]]}} {{bonus=@{init}}}">
+              INITIATIVE </button>
+              <input type="number" name="attr_init" value="@{init}" readonly>
             </div>
             <div class="stat">
               <input type="number" name="attr_level" value="@{level}">
@@ -472,7 +474,7 @@
         </div>
         <!--[HIT DICE]-->
         <div class="hit-dice-main">
-          <button>HIT DICE</button>
+          <button type="action" name="act_hit_dice">HIT DICE</button>
           <div class="hd-spent">
             <input type="number" name="attr_hd" min="0">
             <span>SPENT</span>
@@ -484,7 +486,7 @@
         </div>
         <!--[STRESS]-->
         <div class="stress-main">
-          <button>STRESS</button>
+          <button type="action" name="act_stress">STRESS</button>
           <div class="stress">
             <input type="number" name="attr_stress" min="0">
             <span>CURRENT</span>
@@ -500,14 +502,20 @@
               <input type="number" name="attr_stress_treshold" min="0" readonly>
             </div>
             <div class="stress-treshold-block">
-              <span>DEATH DOOR:</span>
+              <input type="hidden" class="check-death-door" name="attr_check_door" value="0">
+              <div class="door-button">
+                <button type="roll" name="roll_door" value="&{template:door} {{title=DEATH DOOR}} {{roll_1=[[1d20+@{con_save_bonus}]]}} {{bonus=@{con_save_bonus}}}">
+                <span>DEATH DOOR:</span></button>
+              </div>
+              <div class="door-text"><span>DEATH DOOR:</span></div>
               <input type="number" name="attr_stress_door" min="0" readonly>
             </div>
           </div>
         </div>
         <!--[DEATH SAVES]-->
         <div class="death-saves-main">
-          <button>DEATH SAVES</button>
+          <button type="roll" name="roll_death" value="&{template:death} {{title=DEATH SAVE}} {{roll_1=[[1d20]]}}">
+            DEATH SAVES</button>
           <div class="ds-success">
             <input type="checkbox">
             <input type="checkbox">
@@ -1099,6 +1107,7 @@
     <span>[NPC]</span>
   </div>
   <!--[ROLLTEMPLATE]-->
+    <!--[SIMPLE]-->
   <rolltemplate class="sheet-rolltemplate-simple-roll">
     <div class="sheet-roll-result">{{roll_1}}</div>
     {{#roll_2}}
@@ -1109,6 +1118,32 @@
       <div class="sheet-template-bonus"><span>(</span>{{bonus}}<span>)</span></div>
     </div>
   </rolltemplate>
+    <!--[SPECIFIC: INITIATIVE HIT-DICE STRESS]-->
+  <rolltemplate class="sheet-rolltemplate-specific">
+    {{#roll_1}}
+    <div class="sheet-roll-result">{{roll_1}}</div>
+    {{/roll_1}}
+    <div class="sheet-template-title">
+      {{title}}
+      {{#bonus}}
+      <div class="sheet-template-bonus"><span>(</span>{{bonus}}<span>)</span></div>
+      {{/bonus}}
+    </div>
+  </rolltemplate>
+    <!--[DEATH SAVE]-->
+  <rolltemplate class="sheet-rolltemplate-death">
+    <div class="sheet-roll-result">{{roll_1}}</div>
+    <div class="sheet-template-title">{{title}}</div>
+  </rolltemplate>
+    <!--[DEATH DOOR]-->
+  <rolltemplate class="sheet-rolltemplate-door">
+    <div class="sheet-roll-result">{{roll_1}}</div>
+    <div class="sheet-template-title">
+      {{title}}
+      <div class="sheet-template-bonus"><span>(</span>{{bonus}}<span>)</span></div>
+    </div>
+  </rolltemplate>
+
 </div>
 <script type="text/worker"> 
   // [VARIABLES]
@@ -1145,9 +1180,18 @@
   ]);
 
   const class_dice = new Map ([
-    ['Barbarian', 'd12'],['Bard', 'd8'],['Cleric', 'd8'],['Druid', 'd8'],
-    ['Fighter', 'd10'],['Monk', 'd8'],['Paladin', 'd10'],['Ranger', 'd10'],
-    ['Rogue', 'd8'],['Sorcerer', 'd6'],['Warlock', 'd8'],['Wizard', 'd6']
+    ['Barbarian', {dice:'d12', str:1, con:1}],
+    ['Bard', {dice:'d8', dex:1, cha:1}],
+    ['Cleric', {dice:'d8', wis:1, cha:1}],
+    ['Druid', {dice:'d8', int:1, cha:1}],
+    ['Fighter', {dice:'d10', str:1, con:1}],
+    ['Monk', {dice:'d8', str:1, dex:1}],
+    ['Paladin', {dice:'d10', wis:1, cha:1}],
+    ['Ranger', {dice:'d10', str:1, dex:1}],
+    ['Rogue', {dice:'d8', dex:1, int:1}],
+    ['Sorcerer', {dice:'d6', con:1, cha:1}],
+    ['Warlock', {dice:'d8', wis:1, cha:1}],
+    ['Wizard', {dice:'d6', wis:1, int:1}]
   ]);
   const change_attack = [ 
   'is_attack','attack_bonus','optional_attack_mod','is_prof','magic_bonus',
@@ -1319,7 +1363,7 @@
   // [ ABILITY - MOD - SKILL - SKILL_OPTIONAL - SAVE - INIT - PASSIVE ]
   stats.forEach(stat => {
     on(`change:${stat} change:${stat}_save ${build_changes_bonus(get_by_value(skills,stat))} change:prof_bonus`,() => {
-      //console.log(`-- mod i wgl --`);
+      console.log(`-- mod i wgl --`);
       getAttrs([stat,...get_by_value(skills,stat),stat+"_save","prof_bonus",...build_bonus(get_by_value(skills,stat))], values => {
         const output = {};
         let key = '';
@@ -1338,7 +1382,7 @@
         output[key] = stat_save;
         if (stat === 'dex'){
           const initiative = stat_mod;
-          key = `initiative`;
+          key = `init`;
           output[key] = initiative;
         }
         setAttrs(
@@ -1352,7 +1396,7 @@
   // [SKILL BONUS]
   skills_name.forEach(skill => {
     on(`${build_changes_mod(get_by_key(skills,skill))} change:${skill} change:${skill}_expe change:${skill}_optional_bonus change:prof_bonus change:jack`,() => {
-        console.log(`-- skill_bonus --`);
+      console.log(`-- skill_bonus --`);
       getAttrs([skill, skill+"_expe", skill+"_optional_bonus",...build_mod(get_by_key(skills,skill)),"prof_bonus","pass_optional_bonus", "jack"], values => {
         let pass_per;
         const stat_mod = [...build_mod(get_by_key(skills,skill))];
@@ -1383,8 +1427,8 @@
       const level = int(values.level,1);
       const stress = int(values.stress_max,0);
       const stress_c = int(values.stress,0);
-      let treshold;
-      let door;
+      let treshold = 0;
+      let door =0;
       let bonus;
       if (stress_c <= stress) treshold = stress - stress_c;
       if (stress_c <= stress*2) door = stress*2 - stress_c;
@@ -1403,17 +1447,25 @@
     });
   });
 
-  // [CLASS - SPELL-ABILITY]
+  // [CLASS - SPELL-ABILITY - SAVE]
   const class_name = [];
   for (const key of class_dice.keys()) {
     class_name.push(key);
   }
   on('change:class', (eventInfo) => {
+    console.log(`-- spell-ability-dice --`);
+    const output ={};
     const name = eventInfo.newValue;
-    const dice = get_by_key(class_dice,name);
+    const dice = class_dice.get(name).dice;
+    const select = class_dice.get(name);
+    const keys = [...Object.keys(select)];
     let spell_ability_mod;
+    stats.forEach(stat => {
+      if(keys[1] == stat) output[`${stat}_save`] = 1;
+      if(keys[2] == stat) output[`${stat}_save`] = 1;
+    });
     switch (name){
-      case 'Bard':
+      case 'Bard': 
       case 'Paladin':
       case 'Sorcerer':
         spell_ability_mod = 3; break;
@@ -1427,15 +1479,17 @@
       default:
         spell_ability_mod = 0;
     }
-    setAttrs({
-      hd_dice: dice,
-      spell_ability: spell_ability_mod
-    });
+    output[`hd_dice`] = dice;
+    output[`spell_ability`] = spell_ability_mod;
+    //console.log(output);
+    setAttrs(
+      output
+    );
   });
 
   // [SPELL]
   on(`change:int_mod change:wis_mod change:cha_mod change:prof_bonus change:class`,() =>{
-    //console.log(`-- spell-mod --`);
+    console.log(`-- spell-mod --`);
     getAttrs(['spell_ability','int_mod','wis_mod','cha_mod','prof_bonus'],values => {
       const prof = int(values.prof_bonus,2);
       const ability = int(values.spell_ability,0);
@@ -1469,7 +1523,7 @@
 
   // [SPELL SLOTS]
   on(`change:class change:level`,() => {
-    //console.log(`-- spell-slots --`);
+    console.log(`-- spell-slots --`);
     getAttrs(['level','class'], values => {
       const pc_level = values.level;
       const name = values.class;
@@ -1496,7 +1550,7 @@
       for(let i=0; i<9; i++){
         output[`spell_lvl_${i+1}_total`] = slots[i];
       }
-      console.log(output);
+      //console.log(output);
       setAttrs(
         output,
         {silent:true}
@@ -1537,7 +1591,7 @@
   // [EQ - FILTER]
   eq_button.forEach(button => {
     on(`clicked:eq_${button}`,() => {
-      //console.log(`-- repeating_eq_filter --`);
+      console.log(`-- repeating_eq_filter --`);
       getSectionIDs('repeating_eq', ids => {
         const fields = ids.reduce((all,id) => [...all,section_name('eq', id, 'eq_type')], []);
         getAttrs([...fields, 'eq_'+button], values => {
@@ -1672,7 +1726,7 @@
   
   // [REPEATING - ATTACK]
   on(`${build_changes_repeat_attack(change_attack)} ${build_changes_mod(stats)} change:prof_bonus`,() => {
-    //console.log(`-- repeating_attack --`);
+    console.log(`-- repeating_attack --`);
     getSectionIDs(`repeating_attack`, ids => {
       const fields = ids.reduce((all, id) => [...all, 
       section_name('attack', id, 'is_attack'),
@@ -1776,7 +1830,7 @@
       });
   });
 
-  // [SIMPLE - ROLL - BUTTONS - STATS - SAVES - ABILITY]
+  // [SIMPLE - BUTTONS - STATS - SAVES - ABILITY]
   stats.forEach(stat => {
     const skill = [...get_by_value(skills,stat)];
     const skill_changes = skill.map(name => `clicked:${name}`).join(' ');
@@ -1806,6 +1860,44 @@
           finishRoll(roll_stat.rollId);
         });
       });
+    });
+  });
+
+  //[SPECIFIC - BUTTONS - HIT-DICE - STRESS]
+  on(`clicked:hit_dice clicked:stress`,(eventInfo) => {
+    console.log(`-- click-hit-dice/stress --`);
+    getAttrs(['hd_dice','hd','con_mod','wis_mod'],values => {
+      const trigger = eventInfo.triggerName.replace('clicked:','');
+      const dice = values.hd_dice;
+      const con = int(values.con_mod,0);
+      const wis = int(values.wis_mod,0);
+      let spent = int(values.hd,0);
+      let roll_string;
+      if(trigger == 'hit_dice'){
+        if(spent == 0) roll_string = `&{template:specific} {{title=[ NO DICE ]}}`;
+        else{
+          spent -= 1;
+          roll_string = `&{template:specific} {{title=HIT DIE}} {{roll_1=[[1${dice}+${con}]]}} {{bonus=${dice.toUpperCase()}+${con}}}`;
+        }
+      }
+      else roll_string = `&{template:specific} {{title=STRESS}} {{roll_1=[[1${dice}+${wis}]]}} {{bonus=${dice.toUpperCase()}+${wis}}}`;
+      setAttrs({hd: spent});
+      startRoll(roll_string, roll => {
+        finishRoll(roll.rollId);
+      });
+    });
+  });
+
+  //[SPECIFIC - DEATH DOOR]
+  on(`change:stress_door`,() => {
+    console.log(`-- death-door-check --`);
+    console.log()
+    getAttrs(['stress_door'],values => {
+      const door = int(values.stress_door,0);
+      let result;
+      if(door == 0) result=1;
+      else result=0;
+      setAttrs({check_door:result});
     });
   });
 </script>

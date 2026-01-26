@@ -2,6 +2,9 @@
 input[readonly] {
   cursor: default;
 }
+/* death door */
+input.check-death-door[value="0"] ~ div.door-button {display: none;}
+input.check-death-door[value="1"] ~ div.door-text {display: none;}
 /* sheet - tooltip */
 .sheet-tooltip{
   cursor: pointer;
