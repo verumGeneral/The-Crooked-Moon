@@ -189,37 +189,44 @@
             </div>
           </div>
         </div>
-        <!--[STATS / PORTRAIT]-->
+        <!--[STATS / PORTRAIT / BUTTONS]-->
         <div class="stats-main">
+          <!--[LEFT - STATS]-->
           <div class="stats-left">
-            <div class="stat">
+            <div class="stat-rect">
               <span>PROFICIENCY BONUS</span>
               <input type="number" name="attr_prof_bonus" value="@{prof_bonus}" readonly>
             </div>
-            <div class="stat">
+            <div class="stat-rect">
               <button type="roll" name="roll_initiative" 
               value="&{template:specific} {{title=INITIATIVE}} {{roll_1=[[1d20+@{init}]]}} {{bonus=@{init}}}">
               INITIATIVE </button>
               <input type="number" name="attr_init" value="@{init}" readonly>
             </div>
-            <div class="stat">
+            <div class="stat-sqr">
               <input type="number" name="attr_level" value="@{level}">
               <span>LEVEL</span>
             </div>
-            <div class="stat">
+            <div class="stat-sqr">
               <input type="number" name="attr_xp" value="@{xp}">
               <span>XP</span>
             </div>
-            <div class="stat">
+            <div class="stat-isp">
               <span>INSPIRATION</span>
               <input type="checkbox" name="attr_inspiration" value="1">
             </div>
           </div>
+          <!--[PORTRAIT]-->
           <div class="stats-jpg"></div>
+          <!--[RIGHT / AC / BUTTONS]-->
           <div class="stats-right">
-            <div class="stat">
+            <div class="stat-ac">
               <span>ARMOR CLASS</span>
-              <input type="number" name="attr_ac" value="@{ac}">
+              <input type="number" name="attr_ac" value="@{ac}" readonly>
+            </div>
+            <div class="stat-button">
+              <button type="action" name="act_long">LONG REST</button>
+              <button type="action" name="act_short">SHORT REST</button>
             </div>
           </div>
         </div>
@@ -421,29 +428,47 @@
         <!--[FEATURES]-->
         <div class="features-main">
           <span>CLASS FEATURES</span>
-          <fieldset class="repeating_feature">
+          <fieldset class="repeating_features">
             <input type="checkbox" class="repeat-block-switch" name="attr_feat_block_switch" value="1">
                <!--row-mod-->
               <div class="row-raw">
-                <span>Have a limited amount of uses?</span>
-                <input type="checkbox" class="feat-row-show-check" name="attr_show_track" value="1">
-                <div class="feat-row-show">
-                  <input type="checkbox" name="attr_use_prof" value="1">
-                  <span>Use PB?</span>
-                  <span>Total:</span>
-                  <input type="number" name="attr_use_total">
+                <div class="row-track">
+                  <span>Have a limited amount of uses?</span>
+                  <input type="checkbox" class="feat-row-show-check" name="attr_show_track" value="1">
+                  <div class="feat-row-show">
+                    <input type="checkbox" name="attr_use_prof" value="1">
+                    <span>Use PB?</span>
+                    <span>Total:</span>
+                    <input type="number" name="attr_use_total">
+                    <span>Reset on:</span>
+                    <select name="attr_reset">
+                      <option value="-1">--</option>
+                      <option value="0">Long Rest</option>
+                      <option value="1">Short Rest</option>
+                    </select>
+                  </div>
                 </div>
-                <span>NAME:</span>
-                <input type="text" name="attr_name" placeholder="...">
-                <span>SOURCE TYPE:</span>
-                <input type="text" name="attr_source_type" placeholder="...">
-                <textarea name="attr_text" placeholder="..."></textarea>
+                <div class="row-raw-name">
+                  <span>NAME:</span>
+                  <input type="text" name="attr_name" placeholder="...">
+                </div>
+                <div class="row-raw-type">
+                  <span>SOURCE TYPE:</span>
+                  <input type="text" name="attr_source_type" placeholder="...">
+                </div>
+                <div class="row-raw-text">
+                  <textarea name="attr_text" placeholder="..."></textarea>
+                </div>
               </div>
               <!--row-clean-->
               <div class="row-clean">
                 <input type="number" name="attr_use">
-                <button><span name="attr_name"></span></button>
-                <input type="text" name="attr_source_type" readonly>
+                <div class="row-clean-name">
+                  <button type="action" name="act_features"><span name="attr_name"></span></button>
+                </div>
+                <div class="row-clean-sub">
+                  <input type="text" name="attr_source_type" readonly>
+                </div>
                 <input type="checkbox" class="feat-row-hide">
                 <div class="feat-row-hide-text">
                   <input type="text" name="attr_text" readonly>
@@ -536,16 +561,43 @@
             <input type="checkbox" class="repeat-block-switch" name="attr_feat_block_switch" value="1">
                <!--row-mod-->
               <div class="row-raw">
-                <span>NAME:</span>
-                <input type="text" name="attr_name" placeholder="...">
-                <span>SOURCE TYPE:</span>
-                <input type="text" name="attr_source_type" placeholder="...">
-                <textarea name="attr_text" placeholder="..."></textarea>
+                <div class="row-track">
+                  <span>Have a limited amount of uses?</span>
+                  <input type="checkbox" class="feat-row-show-check" name="attr_show_track" value="1">
+                  <div class="feat-row-show">
+                    <input type="checkbox" name="attr_use_prof" value="1">
+                    <span>Use PB?</span>
+                    <span>Total:</span>
+                    <input type="number" name="attr_use_total">
+                    <span>Reset on:</span>
+                    <select name="attr_reset">
+                      <option value="-1">--</option>
+                      <option value="0">Long Rest</option>
+                      <option value="1">Short Rest</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row-raw-name">
+                  <span>NAME:</span>
+                  <input type="text" name="attr_name" placeholder="...">
+                </div>
+                <div class="row-raw-type">
+                  <span>SOURCE TYPE:</span>
+                  <input type="text" name="attr_source_type" placeholder="...">
+                </div>
+                <div class="row-raw-text">
+                  <textarea name="attr_text" placeholder="..."></textarea>
+                </div>
               </div>
               <!--row-clean-->
               <div class="row-clean">
-                <button><span name="attr_name"></span></button>
-                <input type="text" name="attr_source_type" readonly>
+                <input type="number" name="attr_use">
+                <div class="row-clean-name">
+                  <button type="action" name="act_traits"><span name="attr_name"></span></button>
+                </div>
+                <div class="row-clean-sub">
+                  <input type="text" name="attr_source_type" readonly>
+                </div>
                 <input type="checkbox" class="feat-row-hide">
                 <div class="feat-row-hide-text">
                   <input type="text" name="attr_text" readonly>
@@ -670,24 +722,53 @@
               <input type="checkbox" class="repeat-block-switch" name="attr_feat_block_switch" value="1">
                <!--row-mod-->
               <div class="row-raw">
-                <span>NAME:</span>
-                <input type="text" name="attr_name" placeholder="...">
-                <span>SOURCE:</span>
-                <select name="attr_source">
-                  <option value="choose">Choose</option>
-                  <option value="background">Background</option>
-                  <option value="item">Item</option>
-                  <option value="other">Other</option>
-                </select>
-                <span>SOURCE TYPE:</span>
-                <input type="text" name="attr_source_type" placeholder="...">
-                <textarea name="attr_text" placeholder="..."></textarea>
+                <div class="row-raw-track">
+                  <span>Have a limited amount of uses?</span>
+                  <input type="checkbox" class="feat-row-show-check" name="attr_show_track" value="1">
+                  <div class="feat-row-show">
+                    <input type="checkbox" name="attr_use_prof" value="1">
+                    <span>Use PB?</span>
+                    <span>Total:</span>
+                    <input type="number" name="attr_use_total">
+                    <span>Reset on:</span>
+                    <select name="attr_reset">
+                      <option value="-1">--</option>
+                      <option value="0">Long Rest</option>
+                      <option value="1">Short Rest</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row-raw-name">
+                  <span>NAME:</span>
+                  <input type="text" name="attr_name" placeholder="...">
+                </div>
+                <div class="row-raw-source">
+                   <span>SOURCE:</span>
+                  <select name="attr_source">
+                    <option value="">Choose</option>
+                    <option value="background">Background</option>
+                    <option value="item">Item</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="row-raw-type">
+                  <span>SOURCE TYPE:</span>
+                  <input type="text" name="attr_source_type" placeholder="...">
+                </div>
+               <div class="row-raw-text">
+                   <textarea name="attr_text" placeholder="..."></textarea>
+               </div>
               </div>
               <!--row-clean-->
               <div class="row-clean">
-                <button><span name="attr_name"></span></button>
-                <input type="text" name="attr_source" readonly>
+                <input type="number" name="attr_use">
+                <div class="row-clean-name">
+                  <button type="action" name="act_feats"><span name="attr_name"></span></button>
+                </div>
+                <div class="row-clean-sub">
+                  <input type="text" name="attr_source" readonly>
                 <input type="text" name="attr_source_type" readonly>
+                </div>
                 <input type="checkbox" class="feat-row-hide">
                 <div class="feat-row-hide-text">
                   <input type="text" name="attr_text" readonly>
@@ -1143,11 +1224,22 @@
       <div class="sheet-template-bonus"><span>(</span>{{bonus}}<span>)</span></div>
     </div>
   </rolltemplate>
+   <!--[TEXT]-->
+  <rolltemplate class="sheet-rolltemplate-text">
+    <div class="sheet-template-title">{{title}}</div>
+    {{#source}}
+    <div class="sheet-template-source">{{source}}</div>
+    {{/source}}
+    {{#text}}
+    <div class="sheet-template-text">{{text}}</div>
+    {{/text}}
+  </rolltemplate>
 
 </div>
 <script type="text/worker"> 
   // [VARIABLES]
   const mainButton = ["core","spells","fate","options"];
+  const repeats = ['features', 'traits', 'feats'];
   const eq_button = ['null','weapon', 'armor', 'magic','food','components','remedy','other'];
   const stats = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
   const skills_name = ['athl', 'acro', 'slei', 'stea', 
@@ -1269,6 +1361,9 @@
     20: [0,0,0,0,4,0,0,0,0],
   };
   // [FUNCTION]
+  function cap_letter(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
   function build_click(entries) {
     let changes = [];
     for (let i=0; i< entries.length;i++){ 
@@ -1359,7 +1454,6 @@
     else if (skill_check === 0 && jack === 1) return stat_mod+skill_optional+ Math.floor(prof_bonus/2);
     else return stat_mod+(prof_bonus+prof_bonus*skill_expe)+skill_optional;
   }
-
   // [ ABILITY - MOD - SKILL - SKILL_OPTIONAL - SAVE - INIT - PASSIVE ]
   stats.forEach(stat => {
     on(`change:${stat} change:${stat}_save ${build_changes_bonus(get_by_value(skills,stat))} change:prof_bonus`,() => {
@@ -1392,7 +1486,6 @@
       });
     });
   });
-
   // [SKILL BONUS]
   skills_name.forEach(skill => {
     on(`${build_changes_mod(get_by_key(skills,skill))} change:${skill} change:${skill}_expe change:${skill}_optional_bonus change:prof_bonus change:jack`,() => {
@@ -1420,7 +1513,6 @@
       });
     });
   });
-
   // [PROF_BONUS - HIT DICE - STRESS]
   on(`change:level change:stress_max`,() =>{
     getAttrs(["level", "stress_max", "stress"], values => {
@@ -1446,7 +1538,6 @@
       });
     });
   });
-
   // [CLASS - SPELL-ABILITY - SAVE]
   const class_name = [];
   for (const key of class_dice.keys()) {
@@ -1486,7 +1577,6 @@
       output
     );
   });
-
   // [SPELL]
   on(`change:int_mod change:wis_mod change:cha_mod change:prof_bonus change:class`,() =>{
     console.log(`-- spell-mod --`);
@@ -1520,7 +1610,6 @@
       );
     });
   });
-
   // [SPELL SLOTS]
   on(`change:class change:level`,() => {
     console.log(`-- spell-slots --`);
@@ -1587,7 +1676,6 @@
       });
     });
   });
-
   // [EQ - FILTER]
   eq_button.forEach(button => {
     on(`clicked:eq_${button}`,() => {
@@ -1606,7 +1694,6 @@
       });
     });
   });
-
   // [AC]
   on(`change:dex_mod change:repeating_eq:name change:repeating_eq:eq_type`,() => {
     console.log(`-- armore class --`);
@@ -1688,7 +1775,6 @@
       });
     });
   });
-
   // [REPEATING - TOOLS]
   on(`${build_changes_repeat_tools(change_tools)} ${build_changes_mod(stats)}`,() => {
     console.log(`-- repeating_tools --`);
@@ -1723,7 +1809,41 @@
       });
     });
   });
-  
+  // [REPEATING - FEATURES - TRAITS - FEATS - USE]
+  repeats.forEach(repeat => {
+    on(`change:repeating_${repeat}:show_track change:repeating_${repeat}:use_prof change:repeating_${repeat}:use_total`,() => {
+      console.log(`-- repeating_features-traits-itd --`);
+      getSectionIDs(repeat, ids => {
+        const fields = ids.reduce((all, id) => [...all,
+        section_name(repeat, id, 'show_track'),
+        section_name(repeat, id, 'use_prof'),
+        section_name(repeat, id, 'use_total'),
+        section_name(repeat, id, 'use')], []);
+        getAttrs([...fields, 'prof_bonus'], values => {
+          const output = {};
+          const prof = int(values.prof_bonus,2);
+          ids.forEach(id => {
+            const check = int(values[section_name(repeat, id, 'show_track')],0);
+            const check_prof = int(values[section_name(repeat, id, 'use_prof')],0);
+            let use_total = int(values[section_name(repeat, id, 'use_total')],0);
+            let use = int(values[section_name(repeat, id, 'use')],0);
+            if(check === 1){
+              if(check_prof === 1) use_total = prof;
+              output[section_name(repeat, id, 'use_total')] = use_total;
+            }
+            else if(use > use_total) use = use_total;
+            else use = 0;
+            output[section_name(repeat, id, 'use')] = use;
+          });
+          //console.log(output);
+          setAttrs(
+            output,
+            {silent:true}
+          );
+        });
+      });
+    });
+  });
   // [REPEATING - ATTACK]
   on(`${build_changes_repeat_attack(change_attack)} ${build_changes_mod(stats)} change:prof_bonus`,() => {
     console.log(`-- repeating_attack --`);
@@ -1820,7 +1940,18 @@
       });
     });
   });
-
+    //[SPECIFIC - DEATH DOOR]
+  on(`change:stress_door`,() => {
+    console.log(`-- death-door-check --`);
+    console.log()
+    getAttrs(['stress_door'],values => {
+      const door = int(values.stress_door,0);
+      let result;
+      if(door == 0) result=1;
+      else result=0;
+      setAttrs({check_door:result});
+    });
+  });
   // [BUTTONS]
   mainButton.forEach(button => {
       on(`clicked:${button}` , function() {
@@ -1829,7 +1960,6 @@
           });
       });
   });
-
   // [SIMPLE - BUTTONS - STATS - SAVES - ABILITY]
   stats.forEach(stat => {
     const skill = [...get_by_value(skills,stat)];
@@ -1862,7 +1992,6 @@
       });
     });
   });
-
   //[SPECIFIC - BUTTONS - HIT-DICE - STRESS]
   on(`clicked:hit_dice clicked:stress`,(eventInfo) => {
     console.log(`-- click-hit-dice/stress --`);
@@ -1888,16 +2017,58 @@
     });
   });
 
-  //[SPECIFIC - DEATH DOOR]
-  on(`change:stress_door`,() => {
-    console.log(`-- death-door-check --`);
-    console.log()
-    getAttrs(['stress_door'],values => {
-      const door = int(values.stress_door,0);
-      let result;
-      if(door == 0) result=1;
-      else result=0;
-      setAttrs({check_door:result});
+  //[TEXT - BUTTONS - FEATURES - TRAITS - FEATS]
+  repeats.forEach(repeat => {
+    on(`clicked:repeating_${repeat}:${repeat}`, () => {
+      console.log(`-- click-features/triats/feats --`);
+      getSectionIDs(`repeating_${repeat}`, ids => {
+        const fields = ids.reduce((all, id) => [...all,
+        section_name(repeat, id, 'show_track'),
+        section_name(repeat, id, 'use'),
+        section_name(repeat, id, 'name'),
+        section_name(repeat, id, 'source'),
+        section_name(repeat, id, 'source_type'),
+        section_name(repeat, id, 'text')], []);
+        getAttrs([...fields, 'char_name'], values => {
+          const output = {};
+          const char_name = values.char_name;
+          let roll_string;
+          ids.forEach(id => {
+            const check = int(values[section_name(repeat, id, 'show_track')],0);
+            const name = values[section_name(repeat, id, 'name')];
+            const source = values[section_name(repeat, id, 'source')];
+            const source_type = values[section_name(repeat, id, 'source_type')];
+            const text = values[section_name(repeat, id, 'text')];
+            let use = int(values[section_name(repeat, id, 'use')],0);
+            let source_title;
+            if (repeat === 'features') source_title = `Class: `;
+            if (repeat === 'traits') source_title = `Species: `;
+            if (repeat === 'feats') source_title = `${cap_letter(source)}: `;
+            if(check === 1 && use > 0){
+              output[section_name(repeat, id, 'use')] = use-1;
+              roll_string = `&{template:text} {{title=${name} }} {{source=${source_title} ${source_type}}} {{text=${text} }}`;
+            }
+            else if (check === 1 && use <= 0){
+              output[section_name(repeat, id, 'use')] = 0;
+              roll_string = `&{template:text} {{title=[ NO USES REMAINING ] }}`;
+            }
+            else{
+              output[section_name(repeat, id, 'use')] = 0;
+              roll_string = `&{template:text} {{title=${name} }} {{source=${source_title} ${source_type}}} {{text=${text} }}`;
+            }
+          });
+          //console.log(`Roll: ${roll_string}`);
+          setAttrs(
+            output,
+            {silent:true}
+          );
+          startRoll(roll_string, roll_text => {
+            finishRoll(roll_text.rollId);
+          });
+        });
+      });
     });
   });
+  //[BUTTONS - SHORT REST]
+ 
 </script>
