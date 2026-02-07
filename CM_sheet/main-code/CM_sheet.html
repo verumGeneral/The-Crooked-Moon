@@ -616,7 +616,8 @@
         </div>
         <!--[LANGUAGES]-->
         <div class="languages-main">
-          <button>LANGUAGES</button>
+          <button type="roll" name="roll_language" value="&{template:text} {{title=LANGUAGES PROFICIENCY}} {{text=@{languages} }}">
+            LANGUAGES</button>
           <textarea name="attr_languages" placeholder="Common"></textarea>
         </div>
       </div>
@@ -848,7 +849,8 @@
           <div class="weapons-main">
             <div class="weapons-title">
               <hr>
-              <button type="roll" name="roll_weapon" value="@{weapon_prof}">WEAPONS</button> <!--template i wgl-->
+              <button type="roll" name="roll_weapon" value="&{template:text} {{title=WEAPON PROFICIENCY}} {{text=@{weapon_prof} }}"
+              >WEAPONS</button>
             </div>
             <textarea name="attr_weapon_prof" placeholder="Simple"></textarea>
           </div>
@@ -896,16 +898,16 @@
           <div class="armor-main">
             <div>
               <hr>
-              <button type="roll" name="roll_armor" value="@{armor_prof}">ARMOR</button> <hr><!--template i wgl-->
+              <button type="action" name="act_armor">ARMOR</button> <hr>
             </div>
             <span>Light</span>
-            <input type="checkbox" id="prof_armor_light" name="attr_armor_light" value="Light">
+            <input type="checkbox" id="prof_armor_light" name="attr_armor_light" value="1">
             <span>Medium</span>
-            <input type="checkbox" id="prof_armor_medium" name="attr_armor_medium" value="Medium">
+            <input type="checkbox" id="prof_armor_medium" name="attr_armor_medium" value="1">
             <span>Heavy</span>
-            <input type="checkbox" id="prof_armor_heavy" name="attr_armor_heavy" value="Heavy">
+            <input type="checkbox" id="prof_armor_heavy" name="attr_armor_heavy" value="1">
             <span>Shields</span>
-            <input type="checkbox" id="prof_armor_shield" name="attr_armor_shield" value="Shields">
+            <input type="checkbox" id="prof_armor_shield" name="attr_armor_shield" value="1">
           </div>
           <hr>
         </div>
@@ -1376,6 +1378,14 @@
     let changes = [];
     for (let i=0; i< entries.length;i++){ 
       let change = `${entries[i].toLowerCase()}_mod`;
+      changes.push(change);
+    }
+    return changes;
+  };
+    function build_spell(entries) {
+    let changes = [];
+    for (let i=0; i< entries.length;i++){ 
+      let change = `spell_lvl_${entries[i]}_total`;
       changes.push(change);
     }
     return changes;
@@ -2016,7 +2026,6 @@
       });
     });
   });
-
   //[TEXT - BUTTONS - FEATURES - TRAITS - FEATS]
   repeats.forEach(repeat => {
     on(`clicked:repeating_${repeat}:${repeat}`, () => {
@@ -2069,6 +2078,73 @@
       });
     });
   });
-  //[BUTTONS - SHORT REST]
- 
+  //[BUTTONS - SHORT - LONG - REST]
+  const spell_num = [1,2,3,4,5,6,7,8,9];
+  on(`clicked:short clicked:long`, (eventInfo) => {
+    const trigger = eventInfo.triggerName.replace('clicked:','');
+    if (trigger == 'short') console.log(`-- click-short --`);
+    else console.log(`-- click-long --`);
+    const output = {};
+    repeats.forEach(repeat => {
+      getSectionIDs(`repeating_${repeat}`,ids => {
+        const spell = [];
+        const fields = ids.reduce((all, id) => [...all,
+        section_name(repeat, id, 'reset'),
+        section_name(repeat, id, 'use_total')], []);
+        getAttrs([...fields, 'class',...build_spell(spell_num),'hd_max','hd','stress_max','stress_treshold','stress'], values => {
+          const dice_max = int(values.hd_max,0);
+          const dice = int(values.hd,0);
+          const name = values.class;
+          const s = int(values.stress,0);
+          const s_max = int(values.stress_max,0);
+          const s_treshold = int(values.stress_treshold,0);
+          for (let i=0; i<9; i++) spell.push(int(values[`spell_lvl_${i+1}_total`],0));
+          if (trigger === 'short' && name == 'Warlock'){
+            for (let i=0; i<9; i++) output[`spell_lvl_${i+1}_exp`] = spell[i];
+          }
+          else if (trigger === 'long' && name!='Barbarian' && name!='Fighter' && name!='Monk' && name!='Rogue'){
+            for (let i=0; i<9; i++) output[`spell_lvl_${i+1}_exp`] = spell[i];
+          }
+          if (trigger == 'long'){
+            if((dice != dice_max) && (dice+Math.floor(dice_max/2) < dice_max)) output[`hd`] = dice+Math.floor(dice_max/2);
+            else output[`hd`] = dice_max;
+            if (s > 0 && s_treshold > 0 && s-Math.floor(s_max/2) < 0) output[`stress`] = 0;
+            else output[`stress`] = s-Math.floor(s_max/2);
+          }
+          ids.forEach(id => {
+            const reset = int(values[section_name(repeat, id, 'reset')],0);
+            const use_total = int(values[section_name(repeat, id, 'use_total')],0);
+            if(trigger == 'short' && reset === 1) output[section_name(repeat, id, 'use')] = use_total;
+            if(trigger == 'long' && reset === 0) output[section_name(repeat, id, 'use')] = use_total;
+          });
+          setAttrs(
+            output,
+            {silent: true}
+          );
+        });
+      });
+    });
+  });
+ //[BUTTON - TEXT - ARMOR]
+ on(`clicked:armor`, () => {
+  getAttrs(['armor_light', 'armor_heavy', 'armor_medium', 'armor_shield'], values => {
+    console.log(`-- click-armor --`);
+    const check = new Map ([
+      ['light', int(values.armor_light,0)],
+      ['medium', int(values.armor_medium,0)],
+      ['heavy' ,int(values.armor_heavy,0)],
+      ['shield',int(values.armor_shield,0)]
+    ]);
+    let text='';
+    let tab = [...get_by_value(check,1)];
+    for(let i=0; i<tab.length; i++){
+      if (i == tab.length-1) text += `${cap_letter(tab[i])}`;
+      else text += `${cap_letter(tab[i])}, `;
+    }
+    const roll_string = `&{template:text} {{title=ARMOR PROFICIENCY}} {{text=${text} }}`;
+    startRoll(roll_string, roll_text => {
+      finishRoll(roll_text.rollId);
+    });
+  });
+ });
 </script>
