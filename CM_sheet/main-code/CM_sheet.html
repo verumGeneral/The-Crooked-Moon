@@ -418,9 +418,13 @@
             </div>
             <!--row-clean-->
             <div class="row-clean">
-              <button><span name="attr_name"></span></button>
+              <button type="action" name="act_attack"><span name="attr_name"></span></button>
               <input type="text" name="attr_atk_bonus" readonly>
-              <button><span name="attr_atk_damage"></span></button>
+              <button type="roll" name="roll_dmg" value="@{damage_string}">
+                <span name="attr_atk_damage"></span></button>
+              <input type="hidden" name="attr_atk_dmg_bonus_1">
+              <input type="hidden" name="attr_atk_dmg_bonus_2">
+              <input type="hidden" name="attr_damage_string">
               <input name="attr_notes" readonly>
             </div>
           </fieldset>
@@ -539,7 +543,7 @@
         </div>
         <!--[DEATH SAVES]-->
         <div class="death-saves-main">
-          <button type="roll" name="roll_death" value="&{template:death} {{title=DEATH SAVE}} {{roll_1=[[1d20]]}}">
+          <button type="roll" name="roll_death" value="&{template:death} {{title=DEATH SAVE}} {{roll_1=[[/1d20]]}}">
             DEATH SAVES</button>
           <div class="ds-success">
             <input type="checkbox">
@@ -1183,6 +1187,32 @@
             <option value="1">Advantage</option>
           </select>
         </div>
+        <!--[DMG MODIFIER]-->
+        <div class="dmg-mod-main">
+          <!-- repeating_dmg -->
+           <span>DAMAGE MODIFIER</span>
+           <fieldset class="repeating_damage">
+            <input type="checkbox" class="repeat-block-switch" name="attr_feat_block_switch" value="1">
+             <!--row-mod-->
+             <div class="row-raw">
+              <span>Name:</span>
+              <input type="text" name="attr_name" placeholder="Rage">
+              <span>Damage:</span>
+              <input type="text" name="attr_damage" placeholder="2">
+              <span>Critical damage:</span>
+              <input type="text" name="attt_crit_damage" placeholder="1d6">
+              <span>Type:</span>
+              <input type="text" name="attr_type" placeholder="Slashing">
+             </div>
+              <!--row-clean-->
+              <div class="row-clean">
+                <input type="checkbox" name="attr_is_use" value="1">
+                <button type="roll" name="roll_dmg_mod" value="@{dmg_mod}"><span name="attr_name"></span></button>
+                <input type="hidden" name="attr_dmg_mod">
+                <input type="text" name="attr_damage_clean">
+              </div>
+           </fieldset>
+        </div>
     </div>
   </div>
   <!--[NPC-SHEET-MAIN]-->
@@ -1226,7 +1256,7 @@
       <div class="sheet-template-bonus"><span>(</span>{{bonus}}<span>)</span></div>
     </div>
   </rolltemplate>
-   <!--[TEXT]-->
+    <!--[TEXT]-->
   <rolltemplate class="sheet-rolltemplate-text">
     <div class="sheet-template-title">{{title}}</div>
     {{#source}}
@@ -1235,6 +1265,44 @@
     {{#text}}
     <div class="sheet-template-text">{{text}}</div>
     {{/text}}
+  </rolltemplate>
+    <!--[ATTACK]-->
+  <rolltemplate class="sheet-rolltemplate-attack">
+    <div class="sheet-template-head">
+      <div class="sheet-template-result">{{roll_1}}</div>
+      {{#roll_2}}
+      <div class="sheet-template-result">{{roll_2}}</div>
+      {{/roll_2}}
+      {{#effect}}
+      <div class="sheet-template-effect">{{effect}}</div>
+      {{/effect}}
+      <div class="sheet-template-title">
+        {{title}}
+        {{#bonus}}
+        <div class="sheet-template-bonus"><span>(</span>{{bonus}}<span>)</span></div>
+        {{/bonus}}
+      </div>
+      {{#text}}
+      <div class="sheet-template-text">{{text}}</div>
+      {{/text}}
+      {{#bonus_dmg}}
+      <div class="sheet-template-bonus-damage">{{bonus_dmg}}</div>
+      <div class="sheet-template-bonus-title">{{bonus_title}}</div>
+      {{/bonus_dmg}}
+      <div class="sheet-template-damage">{{damage}}</div>
+    </div>
+  </rolltemplate>
+    <!--[DAMAGE]-->
+  <rolltemplate class="sheet-rolltemplate-damage">
+    <div class="sheet-template-result">{{roll_1}}</div>
+    <div class="sheet-template-title">{{title_1}}</div>
+    {{#name}}
+    <div class="sheet-template-name">{{name}}</div>
+    {{/name}}
+    {{#roll_2}}
+    <div class="sheet-template-result">{{roll_2}}</div> 
+    <div class="sheet-template-title">{{title_2}}</div>
+    {{/roll_2}}
   </rolltemplate>
 
 </div>
@@ -1819,6 +1887,31 @@
       });
     });
   });
+  // [REPEATING - DAMAGE]
+  on(`change:repeating_damage:damage change:repeating_damage:type`, () => {
+    console.log(`-- repeating_damage --`);
+    getSectionIDs('repeating_damage', ids => {
+      const fields = ids.reduce((all, id) => [...all,
+      section_name('damage', id, 'damage'),
+      section_name('damage', id, 'type')],[]);
+      getAttrs([...fields], values => {
+        const output = {};
+        ids.forEach(id => {
+          const name = values[section_name('damage', id, 'name')];
+          const damage = values[section_name('damage', id, 'damage')];
+          const type = values[section_name('damage', id, 'type')];
+          const roll_string = `&{template:damage} {{roll_1=[[${damage}]]}} {{title_1=${cap_letter(type)}}}`;
+          const clean = `${damage}[${type}]`;
+          output[section_name('damage', id, 'dmg_mod')] = roll_string;
+          output[section_name('damage', id, 'damage_clean')] = clean;
+        });
+        setAttrs(
+          output,
+          {silent:true}
+        );
+      });
+    });
+  });
   // [REPEATING - FEATURES - TRAITS - FEATS - USE]
   repeats.forEach(repeat => {
     on(`change:repeating_${repeat}:show_track change:repeating_${repeat}:use_prof change:repeating_${repeat}:use_total`,() => {
@@ -1923,6 +2016,7 @@
             })
             if (mod === 'spe') mod_bonus = int(values.spell_attack_bonus,0);
             const dmg_bonus = mod_bonus + optional;
+            output[section_name('attack', id, 'atk_dmg_bonus_1')] = dmg_bonus;
             atk_damage = `${dice}+${dmg_bonus} ${dmg_type}`;
           }
           if (damage_check_2 === 1 && damage_check_1 === 1){
@@ -1936,6 +2030,7 @@
             })
             if (mod === 'spe') mod_bonus = int(values.spell_attack_bonus,0);
             const dmg_bonus = mod_bonus + optional;
+            output[section_name('attack', id, 'atk_dmg_bonus_2')] = dmg_bonus;
             atk_damage += ` ${dice}+${dmg_bonus} ${dmg_type}`;
           }
           else if (damage_check_1 === 0 && damage_check_2 === 1) atk_damage = `--`;
@@ -2144,6 +2239,90 @@
     const roll_string = `&{template:text} {{title=ARMOR PROFICIENCY}} {{text=${text} }}`;
     startRoll(roll_string, roll_text => {
       finishRoll(roll_text.rollId);
+    });
+  });
+ });
+ //[BUTTON - ATTACK - ;-;]
+ on(`clicked:repeating_attack:attack`, () => {
+  console.log(`-- click-attack --`);
+  getSectionIDs('repeating_attack', ids_atk => {
+    getSectionIDs('repeating_damage', ids_dmg => {
+      const fields_atk = ids_atk.reduce((all, id_atk) => [...all,
+      section_name('attack', id_atk, 'name'),
+      section_name('attack', id_atk, 'is_attack'),
+      section_name('attack', id_atk, 'is_save'),
+      section_name('attack', id_atk, 'is_damage_1'),
+      section_name('attack', id_atk, 'is_damage_2'),
+      section_name('attack', id_atk, 'atk_bonus'),
+      section_name('attack', id_atk, 'atk_dmg_bonus_1'),
+      section_name('attack', id_atk, 'atk_dmg_bonus_2'),
+      section_name('attack', id_atk, 'damage_type_1'),
+      section_name('attack', id_atk, 'damage_type_2'),
+      section_name('attack', id_atk, 'damage_dice_1'),
+      section_name('attack', id_atk, 'damage_dice_2'),
+      section_name('attack', id_atk, 'attack_save'),
+      section_name('attack', id_atk, 'save_effect'),
+      section_name('attack', id_atk, 'notes')],[]);
+      const fields_dmg = ids_dmg.reduce((all, id_dmg) => [...all,
+      section_name('damage', id_dmg, 'type'),
+      section_name('damage', id_dmg, 'damage'),
+      section_name('damage', id_dmg, 'is_use')],[]);
+      getAttrs([...fields_atk,...fields_dmg, 'roll'], values => {
+        const output = {};
+        const roll_check = int(values.roll,0);
+        let roll_damage='';
+        let roll_string = `&{template:attack}`;
+        let dmg_total = [];
+        let type_total = [];
+        ids_atk.forEach(id_atk => {
+          const name_atk = values[section_name('attack', id_atk, 'name')];
+          const is_attack = int(values[section_name('attack', id_atk, 'is_attack')],0);
+          const is_save = int(values[section_name('attack', id_atk, 'is_save')],0);
+          const is_damage_1 = int(values[section_name('attack', id_atk, 'is_damage_1')],0);
+          const is_damage_2 = int(values[section_name('attack', id_atk, 'is_damage_2')],0);
+          const atk_bonus = values[section_name('attack', id_atk, 'atk_bonus')].toUpperCase();
+          const atk_damage_1 = int(values[section_name('attack', id_atk, 'atk_dmg_bonus_1')],0);
+          const atk_damage_2 = int(values[section_name('attack', id_atk, 'atk_dmg_bonus_2')],0);
+          const atk_type_1 = values[section_name('attack', id_atk, 'damage_type_1')];
+          const atk_type_2 = values[section_name('attack', id_atk, 'damage_type_2')];
+          const atk_dice_1 = values[section_name('attack', id_atk, 'damage_dice_1')];
+          const atk_dice_2 = values[section_name('attack', id_atk, 'damage_dice_2')];
+          const save_type = values[section_name('attack', id_atk, 'attack_save')];
+          const save_effect = values[section_name('attack', id_atk, 'save_effect')];
+          const notes = values[section_name('attack', id_atk, 'notes')];
+          ids_dmg.forEach(id_dmg => {
+            const is_use = int(values[section_name('damage', id_dmg, 'is_use')],0);
+            const type = values[section_name('damage', id_dmg, 'type')];
+            const damage = values[section_name('damage', id_dmg, 'damage')];
+            if(is_attack == 1 && is_save == 1 || is_save == 0){
+              roll_string += `{{roll_1=[[1d20+${atk_bonus}]] }} {{title=${name} }} {{bonus=${atk_bonus}}} {{damage=[Damage](~@{char_name}|repeating_attack_${id_atk}_dmg) }}`;
+              if (roll_check == 1) roll_string += `{{roll_2=[[1d20+${atk_bonus}]] }}`;
+              if (notes != '') roll_string += `{{text=${notes}}}`;
+            } 
+            else{
+              roll_string += `{{title=${save_type} Save}} {{roll_1=${atk_bonus}}} {{damage=[Damage](~@{char_name}|repeating_attack_${id_atk}_dmg) }}`;
+              if(save_effect != '') roll_string += `{{effect=${save_effect} }}`;
+            }
+            if(is_damage_1 == 1){
+              roll_damage += `&{template:damage} {{roll_1=[[${atk_dice_1}+${atk_damage_1}]] }} {{title_1=${cap_letter(atk_type_1)}}}`;
+            }
+            if (is_damage_2 == 1) roll_damage += `{{roll_2=[[${atk_dice_2}+${atk_damage_2}]] }} {{title_2=${cap_letter(atk_type_2)}}}`;   
+            output[section_name('attack', id_atk, 'damage_string')] = roll_damage; 
+            if(is_use == 1){
+              dmg_total += damage+'+';
+              type_total += cap_letter(type)+'/';
+            } 
+          });
+        });
+        dmg_total = dmg_total.substring(0, dmg_total.length - 1);
+        type_total = type_total.substring(0, type_total.length - 1);
+        roll_string += `{{bonus_dmg=[[${dmg_total}]]}} {{bonus_title=${type_total}}}`;
+        //console.log(roll_string);
+        setAttrs(output);
+        startRoll(roll_string, roll_attack => {
+          finishRoll(roll_attack.rollId);
+        });
+      });
     });
   });
  });
