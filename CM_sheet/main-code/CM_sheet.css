@@ -5,6 +5,8 @@ input[readonly] {
 /* death door */
 input.check-death-door[value="0"] ~ div.door-button {display: none;}
 input.check-death-door[value="1"] ~ div.door-text {display: none;}
+/* spell ask */
+input.check-spell-ask[value="0"] ~ div.spell-ask{display: none;}
 /* sheet - tooltip */
 .sheet-tooltip{
   cursor: pointer;

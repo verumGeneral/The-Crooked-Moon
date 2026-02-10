@@ -807,7 +807,7 @@
         <!--[SPELLS]-->
         <div class="spells-main">
           <span>CANTRIPS & PREPARED SPELLS</span>
-           <fieldset class="repeating_spells">
+           <fieldset class="repeating_spell">
             <input type="checkbox" class="repeat-block-switch" name="attr_spell_block_switch" value="1">
             <!--row-mod-->
             <div class="row-raw">
@@ -819,23 +819,62 @@
               <input type="text" name="attr_cast_time">
               <span>Range:</span>
               <input type="text" name="attr_range">
+              <span>Duration:</span>
+              <input type="text" name="attr_duration">
               <span>Concentration:</span>
-              <input type="checkbox" name="attr_concentration" value="1" class="check">
+              <input type="checkbox" name="attr_is_concentration" value="1" class="check">
               <span>Ritual:</span>
               <input type="checkbox" name="attr_ritual" value="1" class="check">
+              <span>Components:</span>
+              <input type="checkbox" name="attr_is_verbal" value="1">
+              <span>[V]</span>
+              <input type="checkbox" name="attr_is_somatic" value="1">
+              <span>[S]</span>
+              <input type="checkbox" name="attr_is_material" value="1">
               <span>Material:</span>
               <input type="text" name="attr_material" placeholder="...">
+              <span>Saving Throw:</span>
+              <select name="attr_spell_save">
+                <option value="Strength">STR</option>
+                <option value="Dexterity">DEX</option>
+                <option value="Constitution">CON</option>
+                <option value="Inteligence">INT</option>
+                <option value="Wisdom">WIS</option>
+                <option value="Charisma">CHA</option>
+              </select>
+              <span>Effect:</span>
+              <input type="text" name="attr_spell_effect">
+              <span>Output:</span>
+              <select name="attr_spell_output">
+                <option value="-1">--</option>
+                <option value="0">SPELL</option>
+                <option value="1">ATTACK</option>
+              </select>
+              <input type="checkbox" name="is_damage_1" value="1">
+              <span>Damage 1:</span>
+              <input type="text" name="attr_damage_dice_1">
+              <span>Type:</span>
+              <input type="text" name="attr_damage_type_1">
+              <input type="checkbox" name="is_damage_2" value="1">
+              <span>Damage 2:</span>
+              <input type="text" name="attr_damage_dice_2">
+              <span>Type:</span>
+              <input type="text" name="attr_damage_type_2">
+              <span>Higher level cast:</span>
+              <input type="text" name="attr_high_cast">
+              <span>+</span>
+              <input type="number" name="attr_high_cast_mod">
               <span>Notes:</span>
               <textarea name="attr_text" placeholder="..."></textarea>
             </div>
             <!--row-clean-->
             <div class="row-clean">
               <input type="number" name="attr_spell_level" readonly>
-              <input type="button" name="attr_name" value="[placeholder_macro]">
+              <button type="action" name="act_spell"><span name="attr_name"></span></button>
               <input type="text" name="attr_cast_time" readonly>
               <input type="text" name="attr_range" readonly>
-              <input type="number" name="attr_concentration" readonly>
-              <input type="number" name="attr_ritual" readonly>
+              <input type="checkbox" name="attr_concentration" readonly>
+              <input type="checkbox" name="attr_ritual" readonly>
               <div class="sheet-tooltip">
                 <span>!</span>
                 <div>
@@ -843,6 +882,23 @@
                 </div>
               </div>
               <input type="text" name="attr_text" readonly>
+            </div>
+            <!--[SPELLS - ASK]-->
+            <input type="hidden" class="check-spell-ask" name="attr_spell_ask_show" value="0">
+            <div class="spell-ask">
+              <span>Cast at what level?</span>
+              <select name="attr_spell_ask_level">
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+                <option value="5">Level 5</option>
+                <option value="6">Level 6</option>
+                <option value="7">Level 7</option>
+                <option value="8">Level 8</option>
+                <option value="9">Level 9</option>
+              </select>
+              <button type="action" name="act_submit">SUBMIT</button>
             </div>
            </fieldset>
         </div>
@@ -950,7 +1006,7 @@
                   <option value="1">armor</option>
                   <option value="2">magic item</option>
                   <option value="3">food</option>
-                  <option value="4">componends</option>
+                  <option value="4">components</option>
                   <option value="5">remedy</option>
                   <option value="6">other</option>
                 </select>
@@ -1304,7 +1360,24 @@
     <div class="sheet-template-title">{{title_2}}</div>
     {{/roll_2}}
   </rolltemplate>
-
+    <!--[SPELL DESC]-->
+  <rolltemplate class="sheet-rolltemplate-spell">
+    <div class="sheet-template-title">{{title}}</div>
+    <div class="sheet_template-save">
+      {{save}}
+      {{#effect}}
+      <div class="sheet-template-effect">{{effect}}</div>
+      {{/effect}}
+    </div>
+    <div class="sheet-template-cast">{{cast}}</div>
+    <div class="sheet-template-range">{{range}}</div>
+    <div class="sheet-template-components">{{components}}</div>
+    <div class="sheet-template-duration">{{duration}}</div>
+    <div class="sheet-template-notes">{{notes}}</div>
+    {{#desc}}
+    <div class="sheet-template-desc">{{desc}}</div>
+    {{/desc}}
+  </rolltemplate>
 </div>
 <script type="text/worker"> 
   // [VARIABLES]
@@ -1450,10 +1523,18 @@
     }
     return changes;
   };
-    function build_spell(entries) {
+  function build_spell(entries) {
     let changes = [];
     for (let i=0; i< entries.length;i++){ 
       let change = `spell_lvl_${entries[i]}_total`;
+      changes.push(change);
+    }
+    return changes;
+  };
+  function build_spell_exp(entries) {
+    let changes = [];
+    for (let i=0; i< entries.length;i++){ 
+      let change = `spell_lvl_${entries[i]}_exp`;
       changes.push(change);
     }
     return changes;
@@ -2220,110 +2301,193 @@
       });
     });
   });
- //[BUTTON - TEXT - ARMOR]
- on(`clicked:armor`, () => {
-  getAttrs(['armor_light', 'armor_heavy', 'armor_medium', 'armor_shield'], values => {
-    console.log(`-- click-armor --`);
-    const check = new Map ([
-      ['light', int(values.armor_light,0)],
-      ['medium', int(values.armor_medium,0)],
-      ['heavy' ,int(values.armor_heavy,0)],
-      ['shield',int(values.armor_shield,0)]
-    ]);
-    let text='';
-    let tab = [...get_by_value(check,1)];
-    for(let i=0; i<tab.length; i++){
-      if (i == tab.length-1) text += `${cap_letter(tab[i])}`;
-      else text += `${cap_letter(tab[i])}, `;
-    }
-    const roll_string = `&{template:text} {{title=ARMOR PROFICIENCY}} {{text=${text} }}`;
-    startRoll(roll_string, roll_text => {
-      finishRoll(roll_text.rollId);
+  //[BUTTON - TEXT - ARMOR]
+  on(`clicked:armor`, () => {
+    getAttrs(['armor_light', 'armor_heavy', 'armor_medium', 'armor_shield'], values => {
+      console.log(`-- click-armor --`);
+      const check = new Map ([
+        ['light', int(values.armor_light,0)],
+        ['medium', int(values.armor_medium,0)],
+        ['heavy' ,int(values.armor_heavy,0)],
+        ['shield',int(values.armor_shield,0)]
+      ]);
+      let text='';
+      let tab = [...get_by_value(check,1)];
+      for(let i=0; i<tab.length; i++){
+        if (i == tab.length-1) text += `${cap_letter(tab[i])}`;
+        else text += `${cap_letter(tab[i])}, `;
+      }
+      const roll_string = `&{template:text} {{title=ARMOR PROFICIENCY}} {{text=${text} }}`;
+      startRoll(roll_string, roll_text => {
+        finishRoll(roll_text.rollId);
+      });
     });
   });
- });
- //[BUTTON - ATTACK - ;-;]
- on(`clicked:repeating_attack:attack`, () => {
-  console.log(`-- click-attack --`);
-  getSectionIDs('repeating_attack', ids_atk => {
-    getSectionIDs('repeating_damage', ids_dmg => {
-      const fields_atk = ids_atk.reduce((all, id_atk) => [...all,
-      section_name('attack', id_atk, 'name'),
-      section_name('attack', id_atk, 'is_attack'),
-      section_name('attack', id_atk, 'is_save'),
-      section_name('attack', id_atk, 'is_damage_1'),
-      section_name('attack', id_atk, 'is_damage_2'),
-      section_name('attack', id_atk, 'atk_bonus'),
-      section_name('attack', id_atk, 'atk_dmg_bonus_1'),
-      section_name('attack', id_atk, 'atk_dmg_bonus_2'),
-      section_name('attack', id_atk, 'damage_type_1'),
-      section_name('attack', id_atk, 'damage_type_2'),
-      section_name('attack', id_atk, 'damage_dice_1'),
-      section_name('attack', id_atk, 'damage_dice_2'),
-      section_name('attack', id_atk, 'attack_save'),
-      section_name('attack', id_atk, 'save_effect'),
-      section_name('attack', id_atk, 'notes')],[]);
-      const fields_dmg = ids_dmg.reduce((all, id_dmg) => [...all,
-      section_name('damage', id_dmg, 'type'),
-      section_name('damage', id_dmg, 'damage'),
-      section_name('damage', id_dmg, 'is_use')],[]);
-      getAttrs([...fields_atk,...fields_dmg, 'roll'], values => {
+  //[BUTTON - SPELL - ASK]
+  on(`clicked:repeating_spell:spell`, () => {
+    console.log(`-- click-spell-sheet --`);
+    getSectionIDs('repeating_spell', ids => {
+      const fields = ids.reduce((all, id) => [...all,
+      section_name('spell', id, 'spell_ask_show')], []);
+      getAttrs([...fields], values => {
         const output = {};
-        const roll_check = int(values.roll,0);
-        let roll_damage='';
-        let roll_string = `&{template:attack}`;
-        let dmg_total = [];
-        let type_total = [];
-        ids_atk.forEach(id_atk => {
-          const name_atk = values[section_name('attack', id_atk, 'name')];
-          const is_attack = int(values[section_name('attack', id_atk, 'is_attack')],0);
-          const is_save = int(values[section_name('attack', id_atk, 'is_save')],0);
-          const is_damage_1 = int(values[section_name('attack', id_atk, 'is_damage_1')],0);
-          const is_damage_2 = int(values[section_name('attack', id_atk, 'is_damage_2')],0);
-          const atk_bonus = values[section_name('attack', id_atk, 'atk_bonus')].toUpperCase();
-          const atk_damage_1 = int(values[section_name('attack', id_atk, 'atk_dmg_bonus_1')],0);
-          const atk_damage_2 = int(values[section_name('attack', id_atk, 'atk_dmg_bonus_2')],0);
-          const atk_type_1 = values[section_name('attack', id_atk, 'damage_type_1')];
-          const atk_type_2 = values[section_name('attack', id_atk, 'damage_type_2')];
-          const atk_dice_1 = values[section_name('attack', id_atk, 'damage_dice_1')];
-          const atk_dice_2 = values[section_name('attack', id_atk, 'damage_dice_2')];
-          const save_type = values[section_name('attack', id_atk, 'attack_save')];
-          const save_effect = values[section_name('attack', id_atk, 'save_effect')];
-          const notes = values[section_name('attack', id_atk, 'notes')];
-          ids_dmg.forEach(id_dmg => {
-            const is_use = int(values[section_name('damage', id_dmg, 'is_use')],0);
-            const type = values[section_name('damage', id_dmg, 'type')];
-            const damage = values[section_name('damage', id_dmg, 'damage')];
-            if(is_attack == 1 && is_save == 1 || is_save == 0){
-              roll_string += `{{roll_1=[[1d20+${atk_bonus}]] }} {{title=${name} }} {{bonus=${atk_bonus}}} {{damage=[Damage](~@{char_name}|repeating_attack_${id_atk}_dmg) }}`;
-              if (roll_check == 1) roll_string += `{{roll_2=[[1d20+${atk_bonus}]] }}`;
-              if (notes != '') roll_string += `{{text=${notes}}}`;
-            } 
-            else{
-              roll_string += `{{title=${save_type} Save}} {{roll_1=${atk_bonus}}} {{damage=[Damage](~@{char_name}|repeating_attack_${id_atk}_dmg) }}`;
-              if(save_effect != '') roll_string += `{{effect=${save_effect} }}`;
-            }
-            if(is_damage_1 == 1){
-              roll_damage += `&{template:damage} {{roll_1=[[${atk_dice_1}+${atk_damage_1}]] }} {{title_1=${cap_letter(atk_type_1)}}}`;
-            }
-            if (is_damage_2 == 1) roll_damage += `{{roll_2=[[${atk_dice_2}+${atk_damage_2}]] }} {{title_2=${cap_letter(atk_type_2)}}}`;   
-            output[section_name('attack', id_atk, 'damage_string')] = roll_damage; 
-            if(is_use == 1){
-              dmg_total += damage+'+';
-              type_total += cap_letter(type)+'/';
-            } 
-          });
+        ids.forEach(id => {
+          const check = int(values[section_name('spell', id, 'spell_ask_show')],0);
+          let show=1;
+          if(check == 1) show = 0;
+          output[section_name('spell', id, 'spell_ask_show')] = show;
         });
-        dmg_total = dmg_total.substring(0, dmg_total.length - 1);
-        type_total = type_total.substring(0, type_total.length - 1);
-        roll_string += `{{bonus_dmg=[[${dmg_total}]]}} {{bonus_title=${type_total}}}`;
-        //console.log(roll_string);
         setAttrs(output);
-        startRoll(roll_string, roll_attack => {
-          finishRoll(roll_attack.rollId);
+      });
+    });
+  });
+  //[BUTTON - SPELL - ;-;]
+  on(`clicked:repeating_spell:submit`, () => {
+    console.log(`-- click-spell-chat --`);
+    getSectionIDs('repeating_spell', ids => {
+      const fields = ids.reduce((all,id) => [...all,
+      section_name('spell', id, 'name'),
+      section_name('spell', id, 'cast_time'),
+      section_name('spell', id, 'range'),
+      section_name('spell', id, 'is_material'),
+      section_name('spell', id, 'material'),
+      section_name('spell', id, 'is_verbal'),
+      section_name('spell', id, 'is_somatic'),
+      section_name('spell', id, 'is_concentration'),
+      section_name('spell', id, 'duration'),
+      section_name('spell', id, 'spell_save'),
+      section_name('spell', id, 'spell_effect'),
+      section_name('spell', id, 'spell_ask_level'),
+      section_name('spell', id, 'text')], []);
+      getAttrs([...fields, 'spell_save',...build_spell_exp(spell_num)], values => {
+        const output = {};
+        const save = int(values.spell_save,0);
+        const spell = [];
+        for (let i=0; i<9; i++) spell.push(int(values[`spell_lvl_${i+1}_exp`],0));
+        let roll_string=`&{template:spell}`;
+        ids.forEach(id => {
+          const name = values[section_name('spell', id, 'name')];
+          const cast_time = values[section_name('spell', id, 'cast_time')];
+          const range = values[section_name('spell', id, 'range')];
+          const is_material = int(values[section_name('spell', id, 'is_material')],0);
+          const material = values[section_name('spell', id, 'material')];
+          const is_verbal = int(values[section_name('spell', id, 'is_verbal')],0);
+          const is_somatic = int(values[section_name('spell', id, 'is_somatic')],0);
+          const is_concentration = int(values[section_name('spell', id, 'is_concentration')],0);
+          const duration = values[section_name('spell', id, 'duration')];
+          const spell_save = values[section_name('spell', id, 'spell_save')];
+          const spell_effect = values[section_name('spell', id, 'spell_effect')];
+          const ask_level = int(values[section_name('spell', id, 'spell_ask_level')],0);
+          const notes = values[section_name('spell', id, 'text')];
+          let components = `COMPONENTS: `;
+          let duration_clean =`DURATION: `;
+          let save_text = '';
+          if(spell[ask_level-1] <= 0) roll_string += `{{title=[ NO SPELL SLOTS ]}}`;
+          else{
+            roll_string += `{{title=${cap_letter(name)}}} {{cast=CASTING TIME: ${cast_time}}} {{range=RANGE: ${range}}} {{notes=${notes}}}`;
+            if(is_verbal == 1) components += `[V] `;
+            if(is_somatic == 1) components += `[S] `;
+            if(is_material == 1) components += `[M] (${material})`;
+            if(is_concentration == 1) duration_clean += `Concentration, up to 1 minute`;
+            else duration_clean += duration;
+            save_text +=`DC: ${save} ${spell_save.toUpperCase()}`;
+            roll_string += `{{components=${components}}} {{duration=${duration_clean}}} {{save=${save_text}}}`;
+            if (spell_effect.length > 0)  roll_string += `{{effect=${spell_effect}}}`;
+            output[`spell_lvl_${ask_level}_exp`] = spell[ask_level-1] -1;
+          }
+          output[section_name('spell', id, 'spell_ask_show')] = 0;
+        });
+        setAttrs(output);
+        startRoll(roll_string, roll_spell =>{
+          finishRoll(roll_spell.rollId);
         });
       });
     });
   });
- });
+    
+  //[BUTTON - ATTACK - ;-;]
+  on(`clicked:repeating_attack:attack`, () => {
+    console.log(`-- click-attack --`);
+    getSectionIDs('repeating_attack', ids_atk => {
+      getSectionIDs('repeating_damage', ids_dmg => {
+        const fields_atk = ids_atk.reduce((all, id_atk) => [...all,
+        section_name('attack', id_atk, 'name'),
+        section_name('attack', id_atk, 'is_attack'),
+        section_name('attack', id_atk, 'is_save'),
+        section_name('attack', id_atk, 'is_damage_1'),
+        section_name('attack', id_atk, 'is_damage_2'),
+        section_name('attack', id_atk, 'atk_bonus'),
+        section_name('attack', id_atk, 'atk_dmg_bonus_1'),
+        section_name('attack', id_atk, 'atk_dmg_bonus_2'),
+        section_name('attack', id_atk, 'damage_type_1'),
+        section_name('attack', id_atk, 'damage_type_2'),
+        section_name('attack', id_atk, 'damage_dice_1'),
+        section_name('attack', id_atk, 'damage_dice_2'),
+        section_name('attack', id_atk, 'attack_save'),
+        section_name('attack', id_atk, 'save_effect'),
+        section_name('attack', id_atk, 'notes')],[]);
+        const fields_dmg = ids_dmg.reduce((all, id_dmg) => [...all,
+        section_name('damage', id_dmg, 'type'),
+        section_name('damage', id_dmg, 'damage'),
+        section_name('damage', id_dmg, 'is_use')],[]);
+        getAttrs([...fields_atk,...fields_dmg, 'roll'], values => {
+          const output = {};
+          const roll_check = int(values.roll,0);
+          let roll_damage='';
+          let roll_string = `&{template:attack}`;
+          let dmg_total = [];
+          let type_total = [];
+          ids_atk.forEach(id_atk => {
+            const name_atk = values[section_name('attack', id_atk, 'name')];
+            const is_attack = int(values[section_name('attack', id_atk, 'is_attack')],0);
+            const is_save = int(values[section_name('attack', id_atk, 'is_save')],0);
+            const is_damage_1 = int(values[section_name('attack', id_atk, 'is_damage_1')],0);
+            const is_damage_2 = int(values[section_name('attack', id_atk, 'is_damage_2')],0);
+            const atk_bonus = values[section_name('attack', id_atk, 'atk_bonus')].toUpperCase();
+            const atk_damage_1 = int(values[section_name('attack', id_atk, 'atk_dmg_bonus_1')],0);
+            const atk_damage_2 = int(values[section_name('attack', id_atk, 'atk_dmg_bonus_2')],0);
+            const atk_type_1 = values[section_name('attack', id_atk, 'damage_type_1')];
+            const atk_type_2 = values[section_name('attack', id_atk, 'damage_type_2')];
+            const atk_dice_1 = values[section_name('attack', id_atk, 'damage_dice_1')];
+            const atk_dice_2 = values[section_name('attack', id_atk, 'damage_dice_2')];
+            const save_type = values[section_name('attack', id_atk, 'attack_save')];
+            const save_effect = values[section_name('attack', id_atk, 'save_effect')];
+            const notes = values[section_name('attack', id_atk, 'notes')];
+            ids_dmg.forEach(id_dmg => {
+              const is_use = int(values[section_name('damage', id_dmg, 'is_use')],0);
+              const type = values[section_name('damage', id_dmg, 'type')];
+              const damage = values[section_name('damage', id_dmg, 'damage')];
+              let atk_roll = atk_bonus.substring(1);
+              if(is_attack == 1 && is_save == 1 || is_save == 0){
+                roll_string += `{{roll_1=[[1d20+${atk_roll}]] }} {{title=${name_atk} }} {{bonus=${atk_bonus}}} {{damage=[Damage](~@{char_name}|repeating_attack_${id_atk}_dmg) }}`;
+                if (roll_check == 1) roll_string += `{{roll_2=[[1d20+${atk_roll}]] }}`;
+                if (notes != '') roll_string += `{{text=${notes}}}`;
+              } 
+              else{
+                roll_string += `{{title=${save_type} Save}} {{roll_1=${atk_bonus}}} {{damage=[Damage](~@{char_name}|repeating_attack_${id_atk}_dmg) }}`;
+                if(save_effect != '') roll_string += `{{effect=${save_effect} }}`;
+              }
+              if(is_damage_1 == 1){
+                roll_damage += `&{template:damage} {{roll_1=[[${atk_dice_1}+${atk_damage_1}]] }} {{title_1=${cap_letter(atk_type_1)}}}`;
+              }
+              if (is_damage_2 == 1) roll_damage += `{{roll_2=[[${atk_dice_2}+${atk_damage_2}]] }} {{title_2=${cap_letter(atk_type_2)}}}`;   
+              output[section_name('attack', id_atk, 'damage_string')] = roll_damage; 
+              if(is_use == 1){
+                dmg_total += damage+'+';
+                type_total += cap_letter(type)+'/';
+              } 
+            });
+          });
+          dmg_total = dmg_total.substring(0, dmg_total.length - 1);
+          type_total = type_total.substring(0, type_total.length - 1);
+          roll_string += `{{bonus_dmg=[[${dmg_total}]]}} {{bonus_title=${type_total}}}`;
+          //console.log(roll_string);
+          setAttrs(output);
+          startRoll(roll_string, roll_attack => {
+            finishRoll(roll_attack.rollId);
+          });
+        });
+      });
+    });
+  });
 </script>
